@@ -1,0 +1,75 @@
+@extends('layouts.main')
+
+@section('navbar')
+    @include('partials.navbar')
+@endsection
+
+@section('body')
+    <div class="pt-5"></div>
+    <div class="pt-5 pb-5">
+        <div class="contentsc align-self-center mx-auto">
+            <div class="d-flex flex-columns">
+                <div class="container">
+                    <form action="">
+                        <p class="text-center text-light my-3" style="font-size:16px; font-weight:bold;">Cek Status Pesanan</p>
+                        <div class="mb-3 form-floating">
+                            <input type="number" id="floatingInput" name="search" class="form-control" placeholder="Masukkan ID Pesanan anda">
+                            <label for="floatingInput" class="text-black">Masukkan ID Pesanan anda</label>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="submit">Cek Pesanan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    @if(isset($transaksi) && $transaksi)
+        <div class="pb-5">
+            <div class="contentsc align-self-center mx-auto">
+                <div class="d-flex flex-columns">
+                    <div class="container">
+                        <p class="text-center text-light my-3" style="font-size:16px; font-weight:bold;">Detail Pemesanan</p>
+                        <div class="row text-light">
+                            <div class="col">
+                                <b>ID Game</b>
+                                <p>{{ $transaksi->id_game }}</p>
+                                <b>Metode Pembayaran</b>
+                                <p>{{ $transaksi->payment->method }}</p>
+                                <b>No. Rekening/ No. Virtual Account</b>
+                                <p>{{ $transaksi->payment->number }}</p>
+                                <b>Jumlah Pembayaran</b>
+                                <p>{{ 'Rp.' . number_format($transaksi->item->price, 2, ",", ".") }}</p>
+                                <b>Keterangan/ No. Token/ No. Voucher</b>
+                                <p>{{ $transaksi->status }}</p>
+                            </div>
+                            <div class="col">
+                                <b>No. Transaksi</b>
+                                <p>{{ $transaksi->id_transaksi }}</p>
+                                <b>Waktu Transaksi</b>
+                                <p>{{ $transaksi->created_at }}</p>
+                                <b>Rincian Pemesanan</b>
+                                <p>{{ $transaksi->game->game }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @elseif(request()->has('search'))
+        <div class='pb-5'>
+            <div class='contentsc align-self-center mx-auto'>
+                <div class='d-flex flex-columns'>
+                    <div class='container'>
+                        <p class='text-center text-light my-3' style='font-size:16px; font-weight:bold;'>Detail Pemesanan</p>
+                        <p class='text-center text-light my-3'>ID Tidak Ditemukan</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+@endsection
+
+@section('footer')
+    @include('partials.footer')
+@endsection

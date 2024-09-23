@@ -1,0 +1,171 @@
+.container {
+    color: white;
+}
+
+.containbg {
+    background-color: #27292a;
+    border-radius: 30px;
+  }
+  .containadmin {
+    background-color: #1f2122;
+    border-radius: 20px;
+    margin: 0 20px;
+  }
+  .container .card {
+    background-color: #1f2122;
+    color: white;
+    border: 0px;
+  }
+
+  .container .card .list-group-item {
+    background-color: #27292a;
+      color: white;
+  }
+
+  .containadmin .card{
+    background-color: #27292a;
+    color: white;
+  }
+
+.item, .content{
+    background-color: #27292a;
+    border-radius: 30px;
+}
+
+.content img {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+  }
+
+.detail {
+    background-color: #1f2122;
+    border-radius: 15px;
+}
+.detail h5 {
+  color:white;
+  text-decoration:none;
+  text-align: center;
+}
+
+.banner img {
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.tombol {
+  display: inline-block;
+  position: relative;
+  bottom: -34px;
+  background-color: #e75e8d;
+  border: none;
+  border-radius: 15px;
+  padding: 5px 15px;
+  color: white;
+  }
+.tombol a {
+    text-decoration: none;
+    color: white;
+}
+.card {
+  background-color: #27292a;
+}
+.bgform {
+  background-color: #1f2122;
+  border-radius: 30px;
+  padding: 20px;
+  margin-bottom: 10px;
+  color: white;
+}
+.bgform .number {
+  display: inline-block;
+  position: relative;
+  width: 35px;
+  height: 35px;
+  color: white;
+  text-align: center;
+  background-color: #27292a;
+  top: -42px;
+  border: solid 3px #1f2122;
+  padding-top: 4px;
+}
+
+input[type="radio"]{
+  appearance: none;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+  background-color: #27292a;
+  outline: none;
+  box-shadow: 15px 15px 25px rgba(2,28,53,0.05);
+}
+input[type="radio"]:after {
+  position: absolute;
+  font-family: "Font Awesome 5 Free";
+  font-weight: 400;
+  content: "\f111";
+  font-size: 22px;
+  top: 10px;
+  left: 10px;
+  color: #e2e6f3;
+  
+}
+input[type="radio"]:checked:after{
+  font-weight: 900;
+  content: "\f058";
+  color: #e2e6f3;
+}
+input[type="radio"]:checked+label{
+  background-color: #e75e8d;
+  border-radius: 2vh;
+}
+.selected {
+  padding: 0 5px;
+  width: 100%;
+  max-width: 200px;
+  text-align: center;
+}
+
+.selected, .payment, td .payment {
+  background-color: #27292a;
+  border-radius: 20px;
+}
+.payment, td .payment {
+  width: 100%;
+  display: flex;
+  justify-content:space-between;
+  align-items: center;
+}
+.payment img, td .payment {
+  width: 100%;
+    max-width: 156px;
+    border-radius: 0;
+}
+
+.nota {
+  background-color: #1f2122;
+  padding: 20px;
+  margin: 10px;
+  border-radius: 12px;
+  color: white;
+}
+.contentsc {
+  max-width: 500px;
+  width: 100%;
+  background-color: #27292a;
+  margin: 0 100px;
+  border-radius: 30px;
+}
+.contentsc button {
+    display: inline-block;
+    position: relative;
+    background-color: #e75e8d;
+    border: none;
+    border-radius: 15px;
+    padding: 5px 15px;
+    color: white;
+    bottom: -15px;
+}
+

@@ -1,0 +1,29 @@
+.login {
+    max-width: 500px;
+    width: 100%;
+    background-color: #27292a;
+    margin: 0 100px;
+    border-radius: 30px;
+}
+
+.button {
+    display: inline-block;
+    position: relative;
+    background-color: #e75e8d;
+    border: none;
+    border-radius: 15px;
+    padding: 5px 15px;
+    color: white;
+    bottom: -37px;
+}
+.bgform {
+    background-color: #1f2122;
+    border-radius: 30px;
+    padding: 20px;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.d-flex a{
+    text-decoration: none;
+}

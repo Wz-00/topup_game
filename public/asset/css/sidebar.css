@@ -1,0 +1,30 @@
+li {
+    list-style: none;
+    margin: 20px 0 20px 0;
+  }
+  
+  a {
+    text-decoration: none;
+  }
+  
+  .sidebar {
+    max-width: 250px;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    margin-left: -300px;
+    transition: 0.4s;
+    background-color: #1f2122;
+  }
+  
+  .active-main-content {
+    margin-left: 250px;
+  }
+  
+  .active-sidebar {
+    margin-left: 0;
+  }
+  
+  #main-content {
+    transition: 0.4s;
+  }
