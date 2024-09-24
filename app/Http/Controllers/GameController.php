@@ -76,4 +76,12 @@ class GameController extends Controller
         $newgame->save();
         return redirect('/')->with('status', 'Game has been added');
     }
+
+    public function edit(Game $game){
+        return view('admin.editgame', [
+            'title' => 'Edit',
+            'game' => $game,
+            'item' => $game->item
+        ]);
+    }
 }

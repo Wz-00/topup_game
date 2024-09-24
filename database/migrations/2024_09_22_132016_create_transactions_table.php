@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('id_transaksi');
             $table->string('id_game');
-            $table->string('user_id')->default('Guest');
+            $table->foreignId('user_id')->nullable();
             $table->foreignId('payment_id')->constrained('payments');
             $table->foreignId('game_id')->constrained('games');
             $table->foreignId('item_id');

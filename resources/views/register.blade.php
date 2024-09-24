@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('body')
-<link rel="stylesheet" href="css/login.css">
+<link rel="stylesheet" href="/asset/css/login.css">
 <div class="pt5 pb5">
     <div class="login align-self-center mx-auto">
         <div class="d-flex flex-columns">

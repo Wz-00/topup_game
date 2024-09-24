@@ -9,7 +9,7 @@
 @endsection
 
 @section('body')
-<link rel="stylesheet" href="/css/modal.css">
+<link rel="stylesheet" href="/asset/css/modal.css">
 @if (session()->has('status'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         {{ session('status') }}

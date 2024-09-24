@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('game_id');
             $table->integer('price');
             $table->string('icon');
+            $table->string('discount')->nullable();
             $table->string('status')->default('Available');
             $table->timestamps();
         });

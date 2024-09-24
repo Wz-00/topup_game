@@ -10,7 +10,6 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\MemberMiddleware;
-use App\Models\Item;
 
 Route::get('/profile', [AccountController::class, 'index'])->middleware(AdminMiddleware::class);
 Route::get('/banner', [BannerController::class, 'index'])->middleware(AdminMiddleware::class);
@@ -24,7 +23,7 @@ Route::post('/login', [LoginController::class, 'store']);
 Route::get('/logout', [LoginController::class, 'logout'])->middleware('auth');
 Route::get('/register', [RegisterController::class, 'index'])->middleware('guest');
 Route::post('/register', [RegisterController::class, 'store']);
-
+Route::get('/{game:slug}/edit', [GameController::class, 'edit'])->middleware(AdminMiddleware::class);
 Route::get('/', [GameController::class, 'index']);
 Route::post('/', [GameController::class, 'upload']);
 Route::get('/{game:slug}', [GameController::class, 'detail']);

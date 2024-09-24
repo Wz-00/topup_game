@@ -25,7 +25,7 @@
                     @foreach ($item as $it)
                     <div class="col">
                         <div class="detail p-1 my-1">
-                            <img src="{{ $it['icon'] }}" alt="" class="img-fluid mx-auto my-1" style="max-height: 50px;"><br>
+                            <img src="{{ asset('storage/' .$it['icon']) }}" alt="" class="img-fluid mx-auto my-1" style="max-height: 50px;"><br>
                             <b>{{ $it['item'] }}</b>
                             <p>Rp. {{ number_format($it['price'], 2, ",", ".") }}</p>
                         </div>
@@ -36,7 +36,7 @@
         </div>
     </div>
     <div class="text-center">
-        <button class="tombol"><a href='#'><i class="fa-regular fa-pen-to-square"></i>Edit This Game</a></button>
+        <button class="tombol"><a href='/{{ $game->slug }}/edit'><i class="fa-regular fa-pen-to-square"></i>Edit This Game</a></button>
     </div>
 </div>
 @endsection

@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('body')
-<link rel="stylesheet" href="css/login.css">
+<link rel="stylesheet" href="/asset/css/login.css">
 <div class="pt5 pb5">
     @if (session()->has('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
