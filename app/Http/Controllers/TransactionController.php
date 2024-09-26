@@ -87,4 +87,25 @@ class TransactionController extends Controller
             'transactions' => Transaction::where('status', 'Berhasil')->orWhere('status', 'Gagal')->get()
         ]);
     }
+    public function transaksiadmin(Request $request){
+        // Validasi input
+        $request->validate([
+            'transaction_id' => 'required|exists:transactions,id',
+            'status' => 'required|string'
+        ]);
+
+        // Cari transaksi
+        $transaction = Transaction::find($request->transaction_id);
+
+        // Update status sesuai kondisi
+        if ($transaction->status === 'Menunggu Pembayaran' && $request->status === 'Konfirmasi Pembayaran') {
+            $transaction->status = 'Proses';
+        } elseif ($transaction->status === 'Proses' && $request->status === 'Selesaikan Proses') {
+            $transaction->status = 'Berhasil';
+        }
+
+        $transaction->save();
+
+        return redirect()->back()->with('success', 'Status transaksi berhasil diperbarui.');
+    }
 }

@@ -16,6 +16,7 @@ Route::get('/banner', [BannerController::class, 'index'])->middleware(AdminMiddl
 Route::get('/payment', [PaymentController::class, 'index'])->middleware(AdminMiddleware::class);
 Route::get('/revenue', [TransactionController::class, 'revenue'])->middleware(AdminMiddleware::class);
 Route::get('/transaksi', [TransactionController::class, 'nota'])->middleware(AdminMiddleware::class);
+Route::post('/transaksi', [TransactionController::class, 'transaksiadmin'])->middleware(AdminMiddleware::class);
 Route::get('/nota/{id_transaksi}', [TransactionController::class, 'nota'])->name('nota');
 Route::get('/cari-pesanan', [TransactionController::class,'getNota'])->name('search.transaction');
 Route::get('/login', [LoginController::class, 'index'])->middleware('guest');
@@ -24,7 +25,8 @@ Route::get('/logout', [LoginController::class, 'logout'])->middleware('auth');
 Route::get('/register', [RegisterController::class, 'index'])->middleware('guest');
 Route::post('/register', [RegisterController::class, 'store']);
 Route::get('/{game:slug}/edit', [GameController::class, 'edit'])->middleware(AdminMiddleware::class);
+Route::post('/{game:slug}/edit', [GameController::class, 'update'])->name('update.game')->middleware(AdminMiddleware::class);
 Route::get('/', [GameController::class, 'index']);
 Route::post('/', [GameController::class, 'upload']);
-Route::get('/{game:slug}', [GameController::class, 'detail']);
+Route::get('/{game:slug}', [GameController::class, 'detail'])->name('backToGame');
 Route::post('/{game:slug}', [TransactionController::class, 'store'])->middleware(MemberMiddleware::class);

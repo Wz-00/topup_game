@@ -26,12 +26,16 @@ function addMoreItem() {
             <div class="detail p-1 my-1">
                 <div class="row">
                     <div class="col d-flex justify-content-end">
-                        <button type="button" class="close-btn" onclick="removeItem(this)"><i class="fa-regular fa-circle-xmark"></i></button>
+                        <button type="button" class="close-btn" onclick="removeItem(this)">
+                            <i class="fa-regular fa-circle-xmark"></i>
+                        </button>
                     </div>
                 </div>
+                
+                <input type="hidden" name="item_id[]" value="new"> <!-- Set new item with default 'new' -->
 
-                <img src="default-icon.png" alt="No Image" class="img-fluid mx-auto my-1" style="max-height: 50px;" id="preview_item_${itemCount}"><br>
-                <input type="file" id="preview_icon_${itemCount}" name="item_image[]" accept="image/*" style="display:none;" onchange="previewImage(this, 'preview_item_${itemCount}')">
+                <img src="/default-item.png" alt="" class="img-fluid mx-auto my-1" style="max-height: 50px;" id="preview_item_${itemCount}"><br>
+                <input type="file" id="preview_icon_${itemCount}" name="item_image[]" accept="image/*" style="display:none;" onchange="previewImage('preview_icon_${itemCount}', 'preview_item_${itemCount}')">
                 <button type="button" class="button text-center text-light" onclick="document.getElementById('preview_icon_${itemCount}').click();">Select Icon</button>
                 
                 <div class="row text-center">
@@ -54,12 +58,24 @@ function addMoreItem() {
     checkCloseButtonVisibility(); // Check visibility of close buttons
 }
 
+
 // Function to remove an item card
 function removeItem(button) {
     const card = button.closest('.item-card'); // Find the closest parent card
-    card.remove(); // Remove the card
-    checkCloseButtonVisibility(); // Check visibility of close buttons
+    const itemId = card.querySelector('input[name="item_id[]"]').value; // Get the item ID from hidden input
+
+    if (itemId) {
+        // Append the ID to the hidden input field that stores deleted item IDs
+        const deleteInput = document.getElementById('delete_item_ids');
+        let currentValue = deleteInput.value;
+        currentValue += (currentValue ? ',' : '') + itemId; // Append the new ID
+        deleteInput.value = currentValue; // Update hidden input value
+    }
+
+    card.remove(); // Remove the card from the UI
+    checkCloseButtonVisibility(); // Optionally check close button visibility
 }
+
 
 // Function to ensure close button is hidden if only one card remains
 function checkCloseButtonVisibility() {

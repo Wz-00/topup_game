@@ -42,7 +42,16 @@
                                         <td>{{ $transaksi->item->item }}</td>
                                         <td>{{ 'Rp.' . number_format($transaksi->item->price, 2, ",", ".") }}</td>
                                         <td><span class="badge text-bg-warning" style="width: 100%; font-weight: 100px; font-size:14px">{{ $transaksi->status }}</span></td>
-                                        <td class="text-center"><button type="submit" class="btn btn-primary">Konfirmasi</button></td>
+                                        <td class="text-center">
+                                            <form action="{{ url('/transaksi') }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="transaction_id" value="{{ $transaksi->id }}">
+                                                <input type="hidden" name="status" value="{{ $transaksi->status === 'Menunggu Pembayaran' ? 'Konfirmasi Pembayaran' : 'Selesaikan Proses' }}">
+                                                <button type="submit" class="btn btn-primary">
+                                                    {{ $transaksi->status === 'Menunggu Pembayaran' ? 'Konfirmasi Pembayaran' : 'Selesaikan Proses' }}
+                                                </button>
+                                            </form>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>

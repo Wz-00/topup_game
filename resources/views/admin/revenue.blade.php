@@ -45,7 +45,7 @@
                                         <tr>
                                             <td>{{ $transaksi->game->game }}</td>
                                             <td>{{ $transaksi->id_game }}</td>
-                                            <td>{{ $transaksi->id }}</td>
+                                            <td>{{ $transaksi->id_transaksi }}</td>
                                             <td>{{ $transaksi->payment->method }}</td>
                                             <td>{{ $transaksi->item->item }}</td>
                                             <td>{{ 'Rp.' . number_format($transaksi->item->price, 2, ",", ".") }}</td>
