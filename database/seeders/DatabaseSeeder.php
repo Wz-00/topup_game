@@ -7,6 +7,7 @@ use App\Models\Game;
 use App\Models\Item;
 use App\Models\User;
 use App\Models\Banner;
+use App\Models\Company;
 use App\Models\Payment;
 use Illuminate\Database\Seeder;
 
@@ -167,12 +168,24 @@ class DatabaseSeeder extends Seeder
         ];
         Banner::insert($banners);
         $payments = [
-            ['method' => 'BCA Virtual Account', 'number' => 12345678, 'logo' => 'asset/img/payment/bca.png'],
-            ['method' => 'BRI Virtual Account', 'number' => 32145678, 'logo' => 'asset/img/payment/BRI.png'],
-            ['method' => 'BNI Virtual Account', 'number' => 12365478, 'logo' => 'asset/img/payment/bni.png'],
-            ['method' => 'Dana', 'number' => 12345687, 'logo' => 'asset/img/payment/dana.png'],
-            ['method' => 'OVO', 'number' => 87654321, 'logo' => 'asset/img/payment/ovo.png']
+            ['method' => 'BCA Virtual Account', 'slug' => 'bca-va', 'number' => 12345678, 'logo' => 'asset/img/payment/bca.png'],
+            ['method' => 'BRI Virtual Account', 'slug' => 'bri-va', 'number' => 32145678, 'logo' => 'asset/img/payment/BRI.png'],
+            ['method' => 'BNI Virtual Account', 'slug' => 'bni-va', 'number' => 12365478, 'logo' => 'asset/img/payment/bni.png'],
+            ['method' => 'Dana', 'slug' => 'dana', 'number' => 12345687, 'logo' => 'asset/img/payment/dana.png'],
+            ['method' => 'OVO', 'slug' => 'ovo', 'number' => 87654321, 'logo' => 'asset/img/payment/ovo.png']
         ];
         Payment::insert($payments);
+        $company = [ 
+            'name' => 'Your Company', 
+            'UserId' => 1, 
+            'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio nihil eos, inventore optio quibusdam rerum natus praesentium quis',
+            'logo' => 'asset/img/default-logo.png',
+            'ig' => 'cyberlabsofficial',
+            'fb' => 'cyberlabsofficial',
+            'wa' => 6285723036868,
+            'tiktok' => '@cyberlabsofficial',
+            'email' => 'marketing@cyberlabs.co.id'
+        ];
+        Company::insert($company);
     }
 }

@@ -36,7 +36,7 @@
 </style>
 <div class="container-fluid text-light">
     <div class="containadmin p-4">
-        <form action="{{ url('/'.$game->slug.'/edit') }}" method="POST" enctype="multipart/form-data">
+        <form onsubmit="saveUpdate(event)" action="{{ url('/'.$game->slug.'/edit') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <h3 class="text-center mb-3 ">{{ $game->game }}</h3>
             <div class="grid" style="--bs-columns: 3;">
@@ -91,6 +91,10 @@
                                                 <input type="number" id="item_price_{{ $loop->index }}" name="item_price[]" value="{{ $it->price }}" style="width: 100%;" class="form-control py-0">
                                             </div>
                                         </div>
+                                        <p class="text-center">Stock</p>
+                                        <div class="form-floating">
+                                            <input type="number" id="item_stock_{{ $loop->index }}" name="item_stock[]" value="{{ $it->stock }}" style="width: 100%" class="form-control py-0">
+                                        </div>
                                     </div>
                                 </div>
                             @endforeach
@@ -111,6 +115,27 @@
 </div>
 @endsection
 @section('footer')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function saveUpdate(event){
+            event.preventDefault();
+            Swal.fire({
+                title: "Do you want to save the changes?",
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: "Save",
+                denyButtonText: `Don't save`
+                }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    Swal.fire("Saved!", "", "success");
+                    event.target.submit();
+                } else if (result.isDenied) {
+                    Swal.fire("Changes are not saved", "", "info");
+                }
+            });
+        }
+    </script>
     <script src="/asset/js/item.js"></script>
     @include('partials.adminfooter')
 @endsection

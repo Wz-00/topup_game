@@ -70,28 +70,29 @@
                             <p>Edit tampilan perusahaanmu di sini</p>
                         </div>
                         <div class="col-xl-8 col-lg-12 p-4 kanan">
-                            <form action="">
+                            <form action="{{ route('update.company') }}" method="POST" enctype="multipart/form-data">
                                 <div class="row row-cols-1">
                                     <div class="col mb-3 d-flex justify-content-center">
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Laravel.svg/1969px-Laravel.svg.png" alt="" class="rounded-circle">
+                                        <img src="{{ asset('storage/' . $company->logo) }}" alt="" id="preview_logo_image">
+                                        <input type="file" id="preview_logo" name="preview_logo" accept="image/*" style="display:none;" onchange="previewImage('preview_logo', 'preview_logo_image')">
                                     </div>
                                     <div class="col mb-3 d-flex justify-content-center">
-                                        <button class="button">Change Image</button>
+                                        <button class="button" type="button" id="preview_logo_button">Change Image</button>
                                     </div>
                                     <div class="col mb-3">
                                         <div class="form-floating">
-                                            <input type="text" id="floatingInput" class="form-control" placeholder="Your Company Name"/>
+                                            <input type="text" id="floatingInput" class="form-control" placeholder="Your Company Name" name="name" value="{{ $company->name }}"/>
                                             <label for="floatingInput" class="text-black">Your Company Name</label>
                                         </div>
                                     </div>
                                     <div class="col mb-3">
                                         <div class="form-floating">
-                                            <textarea id="deskripsi" class="form-control" style="height: 315px;" placeholder="Your Company Description"></textarea>
+                                            <textarea id="deskripsi" name="description" class="form-control" style="height: 315px;" placeholder="Your Company Description">{{ $company->description }}</textarea>
                                             <label for="deskripsi" class="text-black">Your Company Description</label>
                                         </div>
                                     </div>
                                     <div class="col d-flex justify-content-end">
-                                        <button class="button">Save Changes</button>
+                                        <button class="button" type="submit">Save Changes</button>
                                     </div>
                                 </div>
                             </form>
@@ -103,47 +104,49 @@
                             <p>Jika anda memasukkan link social media anda, user akan mudah untuk menghubungi anda</p>
                         </div>
                         <div class="col-xl-8 col-lg-12 p-4 kanan">
-                            <div class="row">
-                                <div class="col-4 mb-3">
-                                    <img src="/asset/icon/Instagram_icon.png" alt="">
-                                </div>
-                                <div class="col-8 d-flex align-items-center mb-3">
-                                    <div class="form-floating" style="width: 100%">
-                                        <input type="text" id="floatingInput" class="form-control" placeholder="Your Instagram link"/>
-                                        <label for="floatingInput" class="text-black">Your Instagram link</label>
+                            <form action="{{ route('update.medsos') }}" method="POST" enctype="multipart/form-data">
+                                <div class="row">
+                                    <div class="col-4 mb-3">
+                                        <img src="/asset/icon/Instagram_icon.png" alt="Instagram">
+                                    </div>
+                                    <div class="col-8 d-flex align-items-center mb-3">
+                                        <div class="form-floating" style="width: 100%">
+                                            <input type="text" id="floatingInput" class="form-control" placeholder="Your Instagram link" value="{{ $company->ig }}"/>
+                                            <label for="floatingInput" class="text-black">Your Instagram link</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 mb-3">
+                                        <img src="/asset/icon/Facebook_icon.png" alt="Facebook">
+                                    </div>
+                                    <div class="col-8 d-flex align-items-center mb-3">
+                                        <div class="form-floating" style="width: 100%">
+                                            <input type="text" id="floatingInput" class="form-control" placeholder="Your Facebook link" value="{{ $company->fb }}"/>
+                                            <label for="floatingInput" class="text-black">Your Facebook link</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 mb-3">
+                                        <img src="/asset/icon/tiktok_icon.png" alt="Tiktok">
+                                    </div>
+                                    <div class="col-8 d-flex align-items-center mb-3">
+                                        <div class="form-floating" style="width: 100%">
+                                            <input type="text" id="floatingInput" class="form-control" placeholder="Your Tiktok link" value="{{ $company->tiktok }}"/>
+                                            <label for="floatingInput" class="text-black">Your Tiktok link</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 mb-3">
+                                        <img src="/asset/icon/WhatsApp_icon.png" alt="Whatsapp">
+                                    </div>
+                                    <div class="col-8 d-flex align-items-center mb-3">
+                                        <div class="form-floating" style="width: 100%">
+                                            <input type="text" id="floatingInput" class="form-control" placeholder="Your WhatsApp link" value="{{ $company->wa }}"/>
+                                            <label for="floatingInput" class="text-black">Your WhatsApp link</label>
+                                        </div>
+                                    </div>
+                                    <div class="col d-flex justify-content-end">
+                                        <button class="button" type="submit">Save Changes</button>
                                     </div>
                                 </div>
-                                <div class="col-4 mb-3">
-                                    <img src="/asset/icon/Facebook_icon.png" alt="">
-                                </div>
-                                <div class="col-8 d-flex align-items-center mb-3">
-                                    <div class="form-floating" style="width: 100%">
-                                        <input type="text" id="floatingInput" class="form-control" placeholder="Your Facebook link"/>
-                                        <label for="floatingInput" class="text-black">Your Facebook link</label>
-                                    </div>
-                                </div>
-                                <div class="col-4 mb-3">
-                                    <img src="/asset/icon/tiktok_icon.png" alt="">
-                                </div>
-                                <div class="col-8 d-flex align-items-center mb-3">
-                                    <div class="form-floating" style="width: 100%">
-                                        <input type="text" id="floatingInput" class="form-control" placeholder="Your Tiktok link"/>
-                                        <label for="floatingInput" class="text-black">Your Tiktok link</label>
-                                    </div>
-                                </div>
-                                <div class="col-4 mb-3">
-                                    <img src="/asset/icon/WhatsApp_icon.png" alt="">
-                                </div>
-                                <div class="col-8 d-flex align-items-center mb-3">
-                                    <div class="form-floating" style="width: 100%">
-                                        <input type="text" id="floatingInput" class="form-control" placeholder="Your WhatsApp link"/>
-                                        <label for="floatingInput" class="text-black">Your WhatsApp link</label>
-                                    </div>
-                                </div>
-                                <div class="col d-flex justify-content-end">
-                                    <button class="button">Save Changes</button>
-                                </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                     <div class="row mb-3" id="PasswordManagement">
@@ -153,27 +156,29 @@
                         </div>
                         <div class="col-xl-8 col-lg-12 p-4 kanan">
                             <div class="row row-cols-1">
-                                <div class="col mb-3">
-                                    <div class="form-floating">
-                                        <input type="text" id="floatingInput" class="form-control" placeholder="Current Password"/>
-                                        <label for="floatingInput" class="text-black">Current Password</label>
+                                <form action="">
+                                    <div class="col mb-3">
+                                        <div class="form-floating">
+                                            <input type="text" id="floatingInput" class="form-control" placeholder="Current Password"/>
+                                            <label for="floatingInput" class="text-black">Current Password</label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col mb-3">
-                                    <div class="form-floating">
-                                        <input type="text" id="floatingInput" class="form-control" placeholder="New Password"/>
-                                        <label for="floatingInput" class="text-black">New Password</label>
+                                    <div class="col mb-3">
+                                        <div class="form-floating">
+                                            <input type="text" id="floatingInput" class="form-control" placeholder="New Password"/>
+                                            <label for="floatingInput" class="text-black">New Password</label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col mb-3">
-                                    <div class="form-floating">
-                                        <input type="text" id="floatingInput" class="form-control" placeholder="Confirm New Password"/>
-                                        <label for="floatingInput" class="text-black">Confirm New Password</label>
+                                    <div class="col mb-3">
+                                        <div class="form-floating">
+                                            <input type="text" id="floatingInput" class="form-control" placeholder="Confirm New Password"/>
+                                            <label for="floatingInput" class="text-black">Confirm New Password</label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col d-flex justify-content-end">
-                                    <button class="button">Save Changes</button>
-                                </div>
+                                    <div class="col d-flex justify-content-end">
+                                        <button class="button">Save Changes</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -184,5 +189,6 @@
 @endsection
 
 @section('footer')
+    <script src="/asset/js/item.js"></script>
     @include('partials.adminfooter')
 @endsection

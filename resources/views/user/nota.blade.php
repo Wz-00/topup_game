@@ -23,8 +23,8 @@
                     <p>{{ $transaksi->payment->number }}</p>
                     <b>Jumlah Pembayaran</b>
                     <p>{{ 'Rp.' . number_format($transaksi->item->price, 2, ",", ".") }}</p>
-                    <b>Keterangan/ No. Token/ No. Voucher</b>
-                    <p>{{ $transaksi->status }}</p>
+                    <b>Selesaikan Transaksi Sebelum</b>
+                    <p><span id="countdown-{{ $transaksi->id }}"></span></p>
                 </div>
                 <div class="col">
                     <b>No. transaksi</b>
@@ -33,11 +33,37 @@
                     <p>{{ $transaksi->created_at }}</p>
                     <b>Rincian Pemesanan</b>
                     <p>{{ $transaksi->game->game }}</p>
+                    <b>Keterangan/ No. Token/ No. Voucher</b>
+                    <p>{{ $transaksi->status }}</p>
                 </div>
             </div>
         </div>
     </div>
 @endsection
 @section('footer')
+    <script>
+        var dueTime{{ $transaksi->id }} = new Date("{{ $transaksi->created_at->addDay()->format('Y-m-d H:i:s') }}").getTime();
+        
+        var countdownFunction{{ $transaksi->id }} = setInterval(function() {
+            var now = new Date().getTime();
+            var distance = dueTime{{ $transaksi->id }} - now;
+            
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("countdown-{{ $transaksi->id }}").innerHTML =
+                hours + "h " + minutes + "m " + seconds + "s ";
+
+            if (distance < 0) {
+                clearInterval(countdownFunction{{ $transaksi->id }});
+                document.getElementById("countdown-{{ $transaksi->id }}").innerHTML = "Expired";
+
+                // Mengubah status transaksi menjadi Gagal jika expired
+                document.getElementById('statusField').value = 'Gagal';
+                document.getElementById('transaksiForm{{ $transaksi->id }}').submit();
+            }
+        }, 1000);
+    </script>
     @include('partials.footer')
 @endsection

@@ -8,8 +8,8 @@
                     <i class="fa-solid fa-equals" style="color:white"></i>
                 </button>
                 <a href='/' class='navbar-brand text-light'>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Laravel.svg/1969px-Laravel.svg.png" class="navbar-logo" alt="logo" style="width: 50px">
-                    <b>Your Company</b>
+                    <img src="{{ asset('storage/' . $company->logo) }}" class="navbar-logo" alt="logo" style="width: 50px">
+                    <b>{{ $company->name }}</b>
                 </a>
             </ul>
             

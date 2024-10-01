@@ -9,6 +9,11 @@
 @endsection
 
 @section('body')
+<style>
+    td .btn a{
+        color: black;
+    }
+</style>
 <link rel="stylesheet" href="https://cdn.datatables.net/2.1.7/css/dataTables.dataTables.css">
 <div class="container-fluid">
     <div class="containadmin p-4">
@@ -37,13 +42,25 @@
                                         <td><img src="storage/{{ $payment->logo }}" class="payment mx-auto" alt=""></td>
                                         <td>
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onchange="confirmSwitchChange(event)">
-                                                <label class="form-check-label" for="flexSwitchCheckDefault" id="switchLabel">Unavailable</label>
+                                                <!-- Switch akan checked jika status 'Available' -->
+                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault_{{ $payment->id }}" 
+                                                onchange="confirmSwitchChange(event, {{ $payment->id }})" {{ $payment->status == 'Available' ? 'checked' : '' }}>
+                                                
+                                                <!-- Label akan sesuai dengan status dari database -->
+                                                <label class="form-check-label" for="flexSwitchCheckDefault_{{ $payment->id }}" data-payment-id="{{ $payment->id }}">
+                                                    {{ $payment->status == 'Available' ? 'Available' : 'Unavailable' }}
+                                                </label>
                                             </div>
                                         </td>
                                         <td>
-                                            <button class="btn btn-warning"><i class="fa-regular fa-pen-to-square"></i> Edit</button>
-                                            <button class="btn btn-danger"><i class="fa-solid fa-trash-can"></i> Delete</button>
+                                            <button class="btn btn-warning"><a href="/payment/{{ $payment->slug }}/edit"><i class="fa-regular fa-pen-to-square"></i> Edit</a></button>
+                                            <form action="{{ route('payments.destroy', $payment->id) }}" method="POST" id="delete-form-{{ $payment->id }}" style="display: inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $payment->id }})">
+                                                    <i class="fa-solid fa-trash-can"></i> Delete
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -61,34 +78,77 @@
     </div>
 </div>
 @endsection
+
+@section('footer')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    function confirmSwitchChange(event) {
+    function confirmSwitchChange(event, paymentId) {
         event.preventDefault();
         const switchInput = event.target;
-        const label = document.getElementById('switchLabel');
+        const row = switchInput.closest('tr'); // Ambil baris tempat switch berada
+        const label = row.querySelector('label'); // Ambil label dalam baris tersebut
 
         Swal.fire({
             title: "Do you want to save the changes?",
             showDenyButton: true,
-            toast: true,
-            preDeny : false,
+            allowEscapeKey: false,
+            allowOutsideClick: false,
             confirmButtonText: "Save",
             denyButtonText: `Don't save`
         }).then((result) => {
             if (result.isConfirmed) {
-                // Change the label and state of the switch
+                // Ubah teks label dan status switch
                 label.textContent = switchInput.checked ? 'Available' : 'Unavailable';
+                
+                // Kirim data perubahan ke server menggunakan URL saat ini
+                updatePaymentStatus(paymentId, switchInput.checked ? 'Available' : 'Unavailable');
+
                 Swal.fire("Saved!", "", "success");
             } else if (result.isDenied) {
-                // Reset the switch to its previous state
+                // Kembalikan switch ke status sebelumnya
                 switchInput.checked = !switchInput.checked;
                 label.textContent = switchInput.checked ? 'Available' : 'Unavailable';
                 Swal.fire("Changes are not saved", "", "info");
             }
         });
     }
+
+    function updatePaymentStatus(paymentId, status) {
+        $.ajax({
+            url: window.location.href, // Kirim ke URL yang sama (current page URL)
+            method: 'POST', // Menggunakan metode POST
+            data: {
+                _token: '{{ csrf_token() }}', // Sertakan CSRF token untuk keamanan
+                payment_id: paymentId,
+                status: status
+            },
+            success: function(response) {
+                console.log("Status updated successfully!");
+            },
+            error: function(xhr, status, error) {
+                console.error("Error updating status:", error);
+            }
+        });
+    }
+
+    function confirmDelete(paymentId) {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "Cancel",
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Jika user mengonfirmasi, submit form
+                document.getElementById('delete-form-' + paymentId).submit();
+            } else {
+                Swal.fire("Cancelled", "The payment is safe.", "info");
+            }
+        });
+    }
 </script>
-@section('footer')
     @include('partials.adminfooter')
 @endsection

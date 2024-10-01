@@ -50,38 +50,41 @@
     <div class="container">
         <div class="containadmin p-4 mb-3">
             <h4>Banner</h4>
-            <form action="">
-                <div class="row" id="banner-container">
-                    @foreach ($banners as $banner)
-                        <div class="col-xl-6 col-md-12 mb-3 banner-card">
-                            <div class="kartu px-3 pb-3">
-                                <div class="d-flex justify-content-end">
-                                    <button type="button" class="close-btn" onclick="removeCard(this)"><i class="fa-regular fa-circle-xmark"></i></button>
+            <form onsubmit="confirmSubmit(event)" action="{{ route('banner.update') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div id="banner-container" class="row">
+                    @foreach ($banners as $index => $banner)
+                    <div class="col-xl-6 col-md-12 mb-3 banner-card">
+                        <div class="kartu px-3 pb-3">
+                            <div class="d-flex justify-content-end">
+                                <button type="button" class="close-btn" onclick="removeCard(this)"><i class="fa-regular fa-circle-xmark"></i></button>
+                            </div>
+                            <div class="row row-cols-sm-1 row-cols-md-2 d-flex align-items-center">
+                                <div class="col">
+                                    <img id="preview_banner_{{ $index }}" src="{{ asset('storage/' . $banner->banner) }}" alt="No Image" style="max-width: 100%;">
+                                    <input type="file" id="banner_img_{{ $index }}" name="banner_img_{{ $index }}" accept="image/*" style="display:none;" onchange="previewImage(this, 'preview_banner_{{ $index }}')">
                                 </div>
-                                <div class="row row-cols-sm-1 row-cols-md-2 d-flex align-items-center">
-                                    <div class="col">
-                                        <img id="preview_banner_{{ $loop->index }}" src="{{ asset('storage/' . $banner->banner) }}" alt="Banner Image" style="max-width: 100%;">
-                                        <input type="file" id="banner_img_{{ $loop->index }}" name="banner_img_{{ $loop->index }}" accept="image/*" style="display:none;" onchange="previewImage(this, 'preview_banner_{{ $loop->index }}')">
-                                    </div>
-                                    <div class="col">
-                                        <select name="game" id="Game_{{ $loop->index }}" class="form-control mb-3">
-                                            <option value="" selected disabled>Pilih Game</option>
-                                            @foreach ($games as $game)
-                                                <option value="{{ $game->game }}">{{ $game->game }}</option>
-                                            @endforeach
-                                        </select>
-                                        <button type="button" class="button" onclick="document.getElementById('banner_img_{{ $loop->index }}').click();">Select Image</button>
-                                    </div>
+                                <div class="col">
+                                    <select name="game_{{ $index }}" id="game_{{ $index }}" class="form-control mb-3">
+                                        <option value="" disabled>Pilih Game</option>
+                                        @foreach ($games as $game)
+                                            <option value="{{ $game->id }}" {{ $game->id == $banner->game_id ? 'selected' : '' }}>{{ $game->game }}</option>
+                                        @endforeach
+                                    </select>
+                                    <button type="button" class="button" onclick="document.getElementById('banner_img_{{ $index }}').click();">Select Image</button>
                                 </div>
                             </div>
+                            <input type="hidden" name="banner_id_{{ $index }}" value="{{ $banner->id }}">
                         </div>
+                    </div>
                     @endforeach
                 </div>
+            
+                <input type="hidden" name="deleted_banners" id="deleted_banners" value="">
+                <input type="hidden" name="new_banner_count" id="new_banner_count" value="0">
                 <div class="d-flex justify-content-evenly">
-                    <button type="button" class="button" id="add-more-btn" onclick="addMoreBanner()">
-                        <i class="fa-solid fa-plus"></i> Add More Banner
-                    </button>
-                    <button type="button" class="button">
+                    <button class="button" type="button" onclick="addMoreBanner()">Add More Banner</button>
+                    <button type="submit" class="button">
                         <i class="fa-solid fa-floppy-disk"></i> Save Changes
                     </button>
                 </div>
@@ -105,10 +108,28 @@
                             <td>{{ $item->game->game }}</td>
                             <td>{{ $item->item }}</td>
                             <td>{{ $item->price }}</td>
-                            <td>0</td>
+                            <td>
+                                @if ($item->discount === null)
+                                    0
+                                @else
+                                    {{ $item->discount }}%
+                                @endif
+                            </td>
                             <td class="text-center">
-                                <button type="submit" class="btn btn-primary">Discount</button>
-                                <button type="" class="btn btn-warning">Remove Discount</button>
+                                <!-- Form untuk set diskon -->
+                                <form action="{{ route('items.setDiscount', $item->id) }}" method="POST" id="set-discount-form-{{ $item->id }}" style="display: inline;">
+                                    @csrf
+                                    <input type="hidden" name="discount" id="discount-input-{{ $item->id }}">
+                                    <button type="button" class="btn btn-primary" onclick="setDiscount({{ $item->id }})">Set Discount</button>
+                                </form>
+
+                                <!-- Form untuk remove diskon -->
+                                <form action="{{ route('items.removeDiscount', $item->id) }}" method="POST" id="remove-discount-form-{{ $item->id }}" style="display: inline;">
+                                    @csrf
+                                    @method('POST') <!-- Menggunakan POST, tetapi proses sebagai penghapusan diskon -->
+                                    <input type="hidden" name="remove_discount" value="1">
+                                    <button type="button" class="btn btn-warning" onclick="removeDiscount({{ $item->id }})">Remove Discount</button>
+                                </form>
                             </td>
                         </tr>
                     @endforeach
@@ -120,23 +141,28 @@
 
 @section('footer')
     @include('partials.adminfooter')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         // Function to preview the selected image
-        function previewImage(input, previewId) {
-            const file = input.files[0]; // Get the selected file
-            if (file) {
-                const reader = new FileReader(); // FileReader to read the file
-                reader.onload = function (e) {
-                    document.getElementById(previewId).src = e.target.result; // Change the image src to the selected file
-                };
-                reader.readAsDataURL(file); // Read the file as data URL
-            }
+        function removeCard(button) {
+            const card = button.closest('.banner-card');
+            const bannerId = card.querySelector('input[name^="banner_id_"]').value;
+
+            const deletedBanners = document.getElementById('deleted_banners');
+            deletedBanners.value += (deletedBanners.value ? ',' : '') + bannerId;
+
+            card.remove();
+            checkCloseButtonVisibility();
         }
-        
-        // Function to add a new banner card
+
         function addMoreBanner() {
             const bannerContainer = document.getElementById('banner-container');
-            const bannerCount = document.querySelectorAll('.banner-card').length; // Count current banners
+            const bannerCount = document.querySelectorAll('.banner-card').length;
+            const newBannerCountInput = document.getElementById('new_banner_count');
+
+            const newBannerCount = parseInt(newBannerCountInput.value) + 1; // Tambahkan jumlah banner baru
+            newBannerCountInput.value = newBannerCount;
+
             const newCardHTML = `
                 <div class="col-xl-6 col-md-12 mb-3 banner-card">
                     <div class="kartu px-3 pb-3">
@@ -145,36 +171,69 @@
                         </div>
                         <div class="row row-cols-sm-1 row-cols-md-2 d-flex align-items-center">
                             <div class="col">
-                                <img id="preview_banner_${bannerCount}" src="" alt="No Image" style="max-width: 100%;">
-                                <input type="file" id="banner_img_${bannerCount}" name="banner_img_${bannerCount}" accept="image/*" style="display:none;" onchange="previewImage(this, 'preview_banner_${bannerCount}')">
+                                <img id="preview_banner_new_${newBannerCount}" src="" alt="No Image" style="max-width: 100%;">
+                                <input type="file" id="new_banner_img_${newBannerCount}" name="new_banner_img_${newBannerCount}" accept="image/*" style="display:none;" onchange="previewImage(this, 'preview_banner_new_${newBannerCount}')">
                             </div>
                             <div class="col">
-                                <select name="game" id="Game_${bannerCount}" class="form-control mb-3">
+                                <select name="new_game_${newBannerCount}" id="new_game_${newBannerCount}" class="form-control mb-3">
                                     <option value="" selected disabled>Pilih Game</option>
                                     @foreach ($games as $game)
-                                        <option value="{{ $game->game }}">{{ $game->game }}</option>
+                                        <option value="{{ $game->id }}">{{ $game->game }}</option>
                                     @endforeach
                                 </select>
-                                <button type="button" class="button" onclick="document.getElementById('banner_img_${bannerCount}').click();">Select Image</button>
+                                <button type="button" class="button" onclick="document.getElementById('new_banner_img_${newBannerCount}').click();">Select Image</button>
                             </div>
                         </div>
                     </div>
                 </div>
             `;
-            // Insert new card inside the banner container before the add more button
-            bannerContainer.insertAdjacentHTML('beforeend', newCardHTML); // Append new card
-            checkCloseButtonVisibility(); // Check visibility of close buttons
+
+            bannerContainer.insertAdjacentHTML('beforeend', newCardHTML);
         }
-        
-        // Function to remove a banner card
-        function removeCard(button) {
-            const card = button.closest('.banner-card'); // Find the closest parent card
-            card.remove(); // Remove the card
-            checkCloseButtonVisibility(); // Check visibility of close buttons
+
+        function previewImage(input, previewId) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById(previewId).src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
         }
-        
+        function confirmSubmit(event) {
+            // Prevent form from submitting immediately
+            event.preventDefault();
+
+            // Use SweetAlert2 to show confirmation modal
+            Swal.fire({
+                title: "Do you want to save the changes?",
+                showDenyButton: true,
+                confirmButtonText: "Save",
+                denyButtonText: `Don't save`
+            }).then((result) => {
+                // Check if user confirmed the action
+                if (result.isConfirmed) {
+                    // Show success message and submit form
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Your work has been saved",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+
+                    // Submit the form after confirmation
+                    event.target.submit();
+                } else if (result.isDenied) {
+                    // Show info that changes are not saved
+                    Swal.fire("Changes are not saved", "", "info");
+                }
+            });
+        }
+
         // Function to ensure close button is hidden if only one card remains
-        function checkCloseButtonVisibility() {
+        function checkCloseButtonVisibility(itemId) {
             const cards = document.querySelectorAll('.banner-card'); // Select all cards
             cards.forEach(card => {
                 const closeButton = card.querySelector('.close-btn');
@@ -182,6 +241,52 @@
                     closeButton.style.display = 'none'; // Hide close button if only one card is left
                 } else {
                     closeButton.style.display = 'block'; // Show close button if more than one card
+                }
+            });
+        }
+
+        function setDiscount(itemId) {
+            Swal.fire({
+                title: "Set Discount",
+                icon: "question",
+                input: "number",
+                inputLabel: "Enter discount percentage",
+                inputPlaceholder: "0-100",
+                inputAttributes: {
+                    min: 0,
+                    max: 100,
+                    step: 1
+                },
+                showCancelButton: true,
+                confirmButtonText: "Save",
+                cancelButtonText: "Cancel",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let discountValue = result.value || 0;
+
+                    // Set nilai diskon di input form
+                    document.getElementById('discount-input-' + itemId).value = discountValue;
+
+                    // Submit form untuk set diskon
+                    document.getElementById('set-discount-form-' + itemId).submit();
+                }
+            });
+        }
+
+        // Konfirmasi dan remove diskon
+        function removeDiscount(itemId) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "This will remove the discount.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, remove it!",
+                cancelButtonText: "Cancel",
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Submit form untuk remove diskon
+                    document.getElementById('remove-discount-form-' + itemId).submit();
                 }
             });
         }

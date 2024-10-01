@@ -28,6 +28,7 @@
                             <img src="{{ asset('storage/' .$it['icon']) }}" alt="" class="img-fluid mx-auto my-1" style="max-height: 50px;"><br>
                             <b>{{ $it['item'] }}</b>
                             <p>Rp. {{ number_format($it['price'], 2, ",", ".") }}</p>
+                            <p>Stock : {{ $it->stock }}</p>
                         </div>
                     </div>
                     @endforeach

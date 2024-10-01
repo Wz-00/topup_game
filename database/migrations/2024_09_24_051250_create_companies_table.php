@@ -16,10 +16,12 @@ return new class extends Migration
             $table->string('name');
             $table->foreignId('UserId')->constrained('users');
             $table->string('description');
+            $table->string('logo');
             $table->string('ig')->nullable();
             $table->string('fb')->nullable();
-            $table->string('wa')->nullable();
+            $table->bigInteger('wa')->nullable();
             $table->string('tiktok')->nullable();
+            $table->string('email');
             $table->timestamps();
         });
     }

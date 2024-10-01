@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('price');
             $table->string('icon')->default('default-icon.png');
             $table->string('discount')->nullable();
-            $table->string('status')->default('Available');
+            $table->integer('stock')->default(20);
             $table->timestamps();
         });
     }

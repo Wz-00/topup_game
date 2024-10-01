@@ -129,7 +129,7 @@ input[type="radio"]:checked+label{
 }
 
 .selected, .payment, td .payment {
-  background-color: #27292a;
+  background-color: #424242;
   border-radius: 20px;
 }
 .payment, td .payment {

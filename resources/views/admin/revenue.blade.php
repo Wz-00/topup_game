@@ -16,7 +16,7 @@
     } */
 </style>
 <link rel="stylesheet" href="https://cdn.datatables.net/2.1.7/css/dataTables.dataTables.css">
-<div class="container-fluid">
+<div class="container">
     <div class="canvas mx-4 mb-3">
         <canvas id="myChart" height="600" aria-label="Hello ARIA World" role="img" style="background-color: white;"></canvas>
     </div>

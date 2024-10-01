@@ -1,4 +1,9 @@
 // Menambahkan event listener untuk tombol select image
+document.getElementById('preview_logo_button').addEventListener('click', function() {
+    document.getElementById('preview_logo').click();
+});
+
+// Menambahkan event listener untuk tombol select image
 document.getElementById('game_image_button').addEventListener('click', function() {
     document.getElementById('game_image').click();
 });
