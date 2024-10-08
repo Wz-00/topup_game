@@ -1,15 +1,31 @@
 @extends('layouts.main')
 
-@section('sidebar')
-    @include('partials.sidebar')
-@endsection
-
-@section('navbar')
-    @include('partials.navbaradmin')
-@endsection
-
 @section('body')
+
 <div class="container my-4 p-4 containadmin">
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "{{ session('success') }}",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        </script>
+    @endif
+
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                position: "top-end",
+                icon: "error",
+                title: "{{ session('error') }}",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        </script>
+        @endif
     <h3 class="text-center mb-3">{{ $game->game }}</h3>
     <div class="grid" style="--bs-columns: 3;">
         <div class="g-col-3 g-col-md-1">

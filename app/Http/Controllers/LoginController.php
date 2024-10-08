@@ -26,9 +26,12 @@ class LoginController extends Controller
     }
 
     public function logout(Request $request){
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect('/');
+        if (Auth::check()) {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            return redirect('/');
+        }
+        return redirect('/')->with('error', 'Logout gimana bro? lu aja belum login');
     }
 }

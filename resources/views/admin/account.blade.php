@@ -1,13 +1,5 @@
 @extends('layouts.main')
 
-@section('sidebar')
-    @include('partials.sidebar')
-@endsection
-
-@section('navbar')
-    @include('partials.navbaradmin')
-@endsection
-
 @section('body')
 <style>
     .col, .kiri .head {
@@ -24,11 +16,6 @@
     }
     .kanan{
         background-color: #424242;
-    }
-    .row img {
-        width: 100%;
-        max-width: 150px;
-        border-radius: 15px;
     }
     .row button {
         background-color: #e75e8d;
@@ -48,9 +35,32 @@
         color: #e75e8d;
     }
 </style>
-    <div class="container-fluid">
+    <div class="container-fluid my-4">
         <div class="p-4 text-light">
             <div class="grid mx-5" style="--bs-columns: 3;">
+                @if (session('success'))
+                    <script>
+                        Swal.fire({
+                            position: "top-end",
+                            icon: "success",
+                            title: "{{ session('success') }}",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    </script>
+                @endif
+
+                @if (session('error'))
+                    <script>
+                        Swal.fire({
+                            position: "top-end",
+                            icon: "error",
+                            title: "{{ session('error') }}",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    </script>
+                @endif
                 <div class="g-col-3 g-col-xl-1">
                     <div class="row row-cols-1">
                         <div class="col head">Account Management</div>
@@ -71,6 +81,7 @@
                         </div>
                         <div class="col-xl-8 col-lg-12 p-4 kanan">
                             <form action="{{ route('update.company') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
                                 <div class="row row-cols-1">
                                     <div class="col mb-3 d-flex justify-content-center">
                                         <img src="{{ asset('storage/' . $company->logo) }}" alt="" id="preview_logo_image">
@@ -104,42 +115,52 @@
                             <p>Jika anda memasukkan link social media anda, user akan mudah untuk menghubungi anda</p>
                         </div>
                         <div class="col-xl-8 col-lg-12 p-4 kanan">
-                            <form action="{{ route('update.medsos') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('update.company') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
                                 <div class="row">
-                                    <div class="col-4 mb-3">
-                                        <img src="/asset/icon/Instagram_icon.png" alt="Instagram">
+                                    <div class="col-lg-4 col-md-12 mb-3">
+                                        <span class="iconify" data-icon="skill-icons:instagram" data-inline="false" style="font-size: 150px;"></span>
                                     </div>
-                                    <div class="col-8 d-flex align-items-center mb-3">
+                                    <div class="col-lg-8 col-md-12 d-flex align-items-center mb-3">
                                         <div class="form-floating" style="width: 100%">
-                                            <input type="text" id="floatingInput" class="form-control" placeholder="Your Instagram link" value="{{ $company->ig }}"/>
+                                            <input type="text" id="floatingInput" class="form-control" placeholder="Your Instagram link" value="{{ $company->ig }}" name="ig"/>
                                             <label for="floatingInput" class="text-black">Your Instagram link</label>
                                         </div>
                                     </div>
-                                    <div class="col-4 mb-3">
-                                        <img src="/asset/icon/Facebook_icon.png" alt="Facebook">
+                                    <div class="col-lg-4 col-md-12 mb-3">
+                                        <span class="iconify" data-icon="devicon:facebook" data-inline="false" style="font-size: 150px;"></span>
                                     </div>
-                                    <div class="col-8 d-flex align-items-center mb-3">
+                                    <div class="col-lg-8 col-md-12 d-flex align-items-center mb-3">
                                         <div class="form-floating" style="width: 100%">
-                                            <input type="text" id="floatingInput" class="form-control" placeholder="Your Facebook link" value="{{ $company->fb }}"/>
+                                            <input type="text" id="floatingInput" class="form-control" placeholder="Your Facebook link" value="{{ $company->fb }}" name="fb"/>
                                             <label for="floatingInput" class="text-black">Your Facebook link</label>
                                         </div>
                                     </div>
-                                    <div class="col-4 mb-3">
-                                        <img src="/asset/icon/tiktok_icon.png" alt="Tiktok">
+                                    <div class="col-lg-4 col-md-12 mb-3">
+                                        <span class="iconify" data-icon="logos:tiktok-icon" data-inline="false" style="font-size: 150px;"></span>
                                     </div>
-                                    <div class="col-8 d-flex align-items-center mb-3">
+                                    <div class="col-lg-8 col-md-12 d-flex align-items-center mb-3">
                                         <div class="form-floating" style="width: 100%">
-                                            <input type="text" id="floatingInput" class="form-control" placeholder="Your Tiktok link" value="{{ $company->tiktok }}"/>
+                                            <input type="text" id="floatingInput" class="form-control" placeholder="Your Tiktok link" value="{{ $company->tiktok }}" name="tiktok"/>
                                             <label for="floatingInput" class="text-black">Your Tiktok link</label>
                                         </div>
                                     </div>
-                                    <div class="col-4 mb-3">
-                                        <img src="/asset/icon/WhatsApp_icon.png" alt="Whatsapp">
+                                    <div class="col-lg-4 col-md-12 mb-3">
+                                        <span class="iconify" data-icon="logos:whatsapp-icon" data-inline="false" style="font-size: 150px;"></span>
                                     </div>
-                                    <div class="col-8 d-flex align-items-center mb-3">
+                                    <div class="col-lg-8 col-md-12 d-flex align-items-center mb-3">
                                         <div class="form-floating" style="width: 100%">
-                                            <input type="text" id="floatingInput" class="form-control" placeholder="Your WhatsApp link" value="{{ $company->wa }}"/>
+                                            <input type="text" id="floatingInput" class="form-control" placeholder="Your WhatsApp link" value="{{ $company->wa }}" name="wa"/>
                                             <label for="floatingInput" class="text-black">Your WhatsApp link</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-12 mb-3">
+                                        <span class="iconify" data-icon="logos:google-gmail" data-inline="false" style="font-size: 110px;"></span>
+                                    </div>
+                                    <div class="col-lg-8 col-md-12 d-flex align-items-center mb-3">
+                                        <div class="form-floating" style="width: 100%">
+                                            <input type="text" id="floatingInput" class="form-control" placeholder="Your Email" value="{{ $company->email }}" name="email"/>
+                                            <label for="floatingInput" class="text-black">Your Email</label>
                                         </div>
                                     </div>
                                     <div class="col d-flex justify-content-end">
@@ -154,27 +175,41 @@
                             <p class="head">Password Management</p>
                             <p>Kami merekomendasikan anda mengganti password setiap 3 bulan sekali untuk mencegah otorisasi tidak dikenal di akun anda</p>
                         </div>
-                        <div class="col-xl-8 col-lg-12 p-4 kanan">
+                        <div class="col-xl-8 col-lg-12 p-4 kanan password">
                             <div class="row row-cols-1">
-                                <form action="">
+                                <form action="{{ route('update.password') }}" method="POST">
+                                    @csrf
+                                    @if (session('success'))
+                                        <div class="alert alert-success" role="alert">
+                                            {{ session('success') }}
+                                        </div>
+                                    @elseif (session('error'))
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ session('error') }}
+                                        </div>
+                                    @endif
                                     <div class="col mb-3">
                                         <div class="form-floating">
-                                            <input type="text" id="floatingInput" class="form-control" placeholder="Current Password"/>
-                                            <label for="floatingInput" class="text-black">Current Password</label>
+                                            <input type="password" id="oldpassword" name="old_password" class="form-control @error('old_password') is-invalid @enderror" placeholder="Current Password"/>
+                                            <label for="oldpassword" class="text-black">Current Password</label>
+                                            @error('old_password')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col mb-3">
                                         <div class="form-floating">
-                                            <input type="text" id="floatingInput" class="form-control" placeholder="New Password"/>
-                                            <label for="floatingInput" class="text-black">New Password</label>
+                                            <input type="password" id="newPassword" name="new_password" class="form-control" placeholder="New Password"/>
+                                            <label for="newPassword" class="text-black">New Password</label>
                                         </div>
                                     </div>
                                     <div class="col mb-3">
                                         <div class="form-floating">
-                                            <input type="text" id="floatingInput" class="form-control" placeholder="Confirm New Password"/>
-                                            <label for="floatingInput" class="text-black">Confirm New Password</label>
+                                            <input type="password" id="newPasswordConfirmation" name="new_password_confirmation" class="form-control" placeholder="Confirm New Password"/>
+                                            <label for="newPasswordConfirmation" class="text-black">Confirm New Password</label>
                                         </div>
                                     </div>
+                                    
                                     <div class="col d-flex justify-content-end">
                                         <button class="button">Save Changes</button>
                                     </div>
@@ -189,6 +224,22 @@
 @endsection
 
 @section('footer')
+<script>
+    const togglePassword = document.querySelector('#togglePassword');
+    const oldpassword = document.querySelector('#oldpassword');
+    const newpassword = document.querySelector('#newPassword');
+    const confirmpassword = document.querySelector('#newPasswordConfirmation');
+    const password = [oldpassword, newpassword, confirmpassword]
+    togglePassword.addEventListener('click', () => {
+        // Toggle the type attribute using
+        // getAttribure() method
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        
+        password.setAttribute('type', type);
+        
+        
+    });
+    </script>
     <script src="/asset/js/item.js"></script>
     @include('partials.adminfooter')
 @endsection

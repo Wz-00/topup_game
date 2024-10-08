@@ -1,14 +1,7 @@
 @extends('layouts.main')
 
-@section('sidebar')
-    @include('partials.sidebar')
-@endsection
-
-@section('navbar')
-    @include('partials.navbaradmin')
-@endsection
-
 @section('body')
+<link rel="stylesheet" href="/asset/css/modal.css">
 <style>
     td .btn a{
         color: black;
@@ -16,8 +9,31 @@
 </style>
 <link rel="stylesheet" href="https://cdn.datatables.net/2.1.7/css/dataTables.dataTables.css">
 <div class="container-fluid">
-    <div class="containadmin p-4">
+    <div class="containadmin p-4 my-4">
         <div class="row">
+            @if (session('success'))
+                <script>
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "{{ session('success') }}",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                </script>
+            @endif
+
+            @if (session('error'))
+                <script>
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "error",
+                        title: "{{ session('error') }}",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                </script>
+            @endif
             <div class="col-xl-12">
                 <div class="card my-3">
                     <div class="card-body">
@@ -53,14 +69,16 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <button class="btn btn-warning"><a href="/payment/{{ $payment->slug }}/edit"><i class="fa-regular fa-pen-to-square"></i> Edit</a></button>
-                                            <form action="{{ route('payments.destroy', $payment->id) }}" method="POST" id="delete-form-{{ $payment->id }}" style="display: inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $payment->id }})">
-                                                    <i class="fa-solid fa-trash-can"></i> Delete
-                                                </button>
-                                            </form>
+                                            @if ($payment->id !== 1)
+                                                <button class="btn btn-warning"><a href="/payment/{{ $payment->slug }}/edit"><i class="fa-regular fa-pen-to-square"></i> Edit</a></button>
+                                                <form action="{{ route('payments.destroy', $payment->id) }}" method="POST" id="delete-form-{{ $payment->id }}" style="display: inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $payment->id }})">
+                                                        <i class="fa-solid fa-trash-can"></i> Delete
+                                                    </button>
+                                                </form>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
@@ -70,9 +88,53 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="addPayment" tabindex="-1" aria-labelledby="myModalLabel1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title"><i class="fa-solid fa-plus"></i> Add Payment Method</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{{ route('payment.upload') }}" id="uploadForm" class="container" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="modal-body">
+                            <table class="table table-striped bordered">
+                                <!-- sesuaikan dengan button yang ditekan/ ambil dari database -->
+                                <tr>
+                                    <td>Payment name</td>
+                                    <td><input type="text" placeholder="Nama method" name="method" id="method" value="{{ old('method') }}"></td>
+                                </tr>
+                                <tr>
+                                    <td>Nomor Rekening</td>
+                                    <td><input type="number" class="form-control" placeholder="Nomor rekening" name="rekening" id="rekening" value="{{ old('rekening') }}"></td>
+                                </tr>
+                                <tr>
+                                    <td>Logo</td>
+                                    <td><button class="select-image btn btn-primary">Select Image</button></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                    <input type="file" name='logo' id="image" accept="image/*" hidden required>
+                                    <div class="img-area" data-img="">
+                                        <i class='bx bxs-cloud-upload icon'></i>
+                                        <h3>Upload Image</h3>
+                                        <p>Image size must be less than <span>20MB</span></p>
+                                    </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Add</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
         <div class="text-center">
-            <button type="button" class="tombol">
-            <i class="fa-solid fa-plus"></i> Add more method
+            <button type="button" class="tombol" data-bs-toggle="modal" data-bs-target="#addPayment">
+                <i class="fa-solid fa-plus"></i> Add more method
             </button>
         </div>
     </div>
@@ -80,7 +142,7 @@
 @endsection
 
 @section('footer')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/asset/js/modal.js"></script>
 <script>
     function confirmSwitchChange(event, paymentId) {
         event.preventDefault();

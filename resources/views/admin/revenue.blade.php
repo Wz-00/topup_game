@@ -1,13 +1,5 @@
 @extends('layouts.main')
 
-@section('sidebar')
-    @include('partials.sidebar')
-@endsection
-
-@section('navbar')
-    @include('partials.navbaradmin')
-@endsection
-
 @section('body')
 <style>
     /* .canvas {
@@ -16,7 +8,7 @@
     } */
 </style>
 <link rel="stylesheet" href="https://cdn.datatables.net/2.1.7/css/dataTables.dataTables.css">
-<div class="container">
+<div class="container my-4">
     <div class="canvas mx-4 mb-3">
         <canvas id="myChart" height="600" aria-label="Hello ARIA World" role="img" style="background-color: white;"></canvas>
     </div>
@@ -48,7 +40,7 @@
                                             <td>{{ $transaksi->id_transaksi }}</td>
                                             <td>{{ $transaksi->payment->method }}</td>
                                             <td>{{ $transaksi->item->item }}</td>
-                                            <td>{{ 'Rp.' . number_format($transaksi->item->price, 2, ",", ".") }}</td>
+                                            <td>{{ 'Rp.' . number_format($transaksi->price, 2, ",", ".") }}</td>
                                             @if ($transaksi->status == 'Berhasil')
                                                 <td><span class="badge text-bg-success" style="width: 100%; font-weight: 100px; font-size:14px">{{ $transaksi->status }}</span></td>    
                                             @else

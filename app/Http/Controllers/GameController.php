@@ -19,9 +19,11 @@ class GameController extends Controller
         if (Auth::check()) {
             $role = Auth::user()->role;
             if ($role === 'admin') {
+                $lowStockCount = Item::where('stock', '<=', 5)->count();
                 return view('admin.home', [
                     'title' => 'Home',
-                    "games" => Game::all() 
+                    "games" => Game::all(),
+                    "countStock" => $lowStockCount,
                 ]);
             } else {
                 return view('user.home', [
@@ -74,13 +76,18 @@ class GameController extends Controller
     public function upload(Request $request){
         // $uploads = $request->all();
         // Game::create($uploads);
+        $request->validate([
+            'game' => 'required',
+            'description' => 'required',
+            'image' => 'required|image|max:2048',
+        ]);
         $newgame = new Game;
         $newgame->game = $request->game;
         $newgame->slug = Str::slug($request->game);
         $newgame->description = $request->description;
         $newgame->image = $request->file('image')->store('/asset/img/game');
         $newgame->save();
-        return redirect('/')->with('status', 'Game has been added');
+        return redirect('/')->with('success', 'Game has been added');
     }
 
     public function edit(Game $game){
@@ -124,7 +131,10 @@ class GameController extends Controller
                 if (isset($itemImages[$index])) {
                     // Delete old icon if it exists and is not default
                     if ($item->icon && $item->icon !== 'default-icon.png') {
-                        Storage::delete($item->icon);
+                        $oldIconPath = public_path($item->icon); // Convert relative path to absolute
+                        if (file_exists($oldIconPath)) {
+                            unlink($oldIconPath); // Use unlink to delete the old file
+                        }
                     }
                     // Save new icon
                     $item->icon = $itemImages[$index]->store('/asset/img/items');
@@ -143,7 +153,7 @@ class GameController extends Controller
             Item::whereIn('id', $deleteItemIds)->delete();
         }
 
-        return redirect()->route('backToGame', ['game' => $game->slug])->with('status', 'Game and items have been updated');
+        return redirect()->route('backToGame', ['game' => $game->slug])->with('success', 'Game and items have been updated');
     }
 
 }

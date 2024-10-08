@@ -1,13 +1,5 @@
 @extends('layouts.main')
 
-@section('sidebar')
-    @include('partials.sidebar')
-@endsection
-
-@section('navbar')
-    @include('partials.navbaradmin')
-@endsection
-
 @section('body')
     <style>
         .kartu {
@@ -48,7 +40,31 @@
     </style>
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.7/css/dataTables.dataTables.css">
     <div class="container">
-        <div class="containadmin p-4 mb-3">
+        @if (session('success'))
+            <script>
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "{{ session('success') }}",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            </script>
+        @endif
+
+        @if (session('error'))
+            <script>
+                Swal.fire({
+                    position: "top-end",
+                    icon: "error",
+                    title: "{{ session('error') }}",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            </script>
+        @endif
+        {{-- Banner --}}
+        <div class="containadmin p-4 my-4">
             <h4>Banner</h4>
             <form onsubmit="confirmSubmit(event)" action="{{ route('banner.update') }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -90,7 +106,8 @@
                 </div>
             </form>
         </div>
-        <div class="containadmin p-4">
+        {{-- Discount --}}
+        <div class="containadmin p-4 my-3">
             <h4>Discount</h4>
             <table class="table table-hover table-dark" id="example">
                 <thead>
@@ -99,7 +116,7 @@
                         <th scope="col">Item</th>
                         <th scope="col">Price</th>
                         <th scope="col">Discount</th>
-                        <th scope="col">Action</th>
+                        <th scope="col" class="text-center">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -129,6 +146,49 @@
                                     @method('POST') <!-- Menggunakan POST, tetapi proses sebagai penghapusan diskon -->
                                     <input type="hidden" name="remove_discount" value="1">
                                     <button type="button" class="btn btn-warning" onclick="removeDiscount({{ $item->id }})">Remove Discount</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        {{-- Bonus Coins --}}
+        <div class="containadmin p-4 my-3">
+            <h4>Bonus Coins</h4>
+            <table class="table table-hover table-dark" id="example1">
+                <thead>
+                    <tr class="align-self-center">
+                        <th scope="col">Game</th>
+                        <th scope="col">Item</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Coins</th>
+                        <th scope="col" class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($items as $item)
+                        <tr>
+                            <td>{{ $item->game->game }}</td>
+                            <td>{{ $item->item }}</td>
+                            <td>{{ $item->price }}</td>
+                            <td>
+                                @if ($item->coins === null)
+                                    0
+                                @else
+                                    {{ $item->coins }}
+                                @endif
+                            </td>
+                            <td class="text-center">
+                                <form action="{{ route('items.setCoins', $item->id) }}" method="POST" id="set-coins-{{ $item->id }}">
+                                    @csrf
+                                    <input type="hidden" name="coins" id="coins-input-{{ $item->id }}">
+                                    <button type="button" class="btn btn-primary" onclick="setCoins({{ $item->id }})">Set Coin</button>
+                                </form>
+                                <form action="{{ route('items.deleteCoins', $item->id) }}" method="POST" id="remove-coins-{{ $item->id }}">
+                                    @csrf
+                                    <input type="hidden" name="remove_coins" value="1">
+                                    <button type="button" class="btn btn-warning" onclick="removeCoins({{ $item->id }})">Remove Coins</button>
                                 </form>
                             </td>
                         </tr>
@@ -182,6 +242,7 @@
                                     @endforeach
                                 </select>
                                 <button type="button" class="button" onclick="document.getElementById('new_banner_img_${newBannerCount}').click();">Select Image</button>
+                                <input type="hidden" name="banner_id_{{ $index }}" value="{{ $banner->id }}">
                             </div>
                         </div>
                     </div>
@@ -287,6 +348,50 @@
                 if (result.isConfirmed) {
                     // Submit form untuk remove diskon
                     document.getElementById('remove-discount-form-' + itemId).submit();
+                }
+            });
+        }
+
+        function setCoins(itemId) {
+            Swal.fire({
+                title: "Set Coins Bonus",
+                icon: "question",
+                input: "number",
+                inputLabel: "Enter Coins",
+                inputPlaceholder: "0-1000",
+                inputAttributes: {
+                    min: 0,
+                    max: 1000,
+                    step: 1
+                },
+                showCancelButton: true,
+                confirmButtonText: "Save",
+                cancelButtonText: "Cancel",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let coinsValue = result.value || 0;
+
+                    // Set nilai diskon di input form
+                    document.getElementById('coins-input-' + itemId).value = coinsValue;
+
+                    // Submit form untuk set diskon
+                    document.getElementById('set-coins-' + itemId).submit();
+                }
+            });
+        }
+        function removeCoins(itemId) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "This will remove the Coins.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, remove it!",
+                cancelButtonText: "Cancel",
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Submit form untuk remove diskon
+                    document.getElementById('remove-coins-' + itemId).submit();
                 }
             });
         }

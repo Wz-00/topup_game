@@ -1,7 +1,9 @@
 <div class="text-center pt-3 text-light">
     <p>Copyright © 2036 Your Company. All rights reserved.</p>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/asset/js/modal.js"></script>
+<script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
@@ -15,6 +17,11 @@
     scrollX: true
     });
     
+    // datatable
+    new DataTable('#example1', {
+    scrollX: true
+    });
+
     // event will be executed when the toggle-button is clicked
     document.getElementById("button-toggle").addEventListener("click", () => {
 

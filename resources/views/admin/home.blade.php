@@ -1,22 +1,31 @@
 @extends('layouts.main')
 
-@section('sidebar')
-    @include('partials.sidebar')
-@endsection
-
-@section('navbar')
-    @include('partials.navbaradmin')
-@endsection
-
 @section('body')
 <link rel="stylesheet" href="/asset/css/modal.css">
-@if (session()->has('status'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ session('status') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+@if (session('success'))
+<script>
+    Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "{{ session('success') }}",
+        showConfirmButton: false,
+        timer: 1500
+    });
+</script>
 @endif
-<div class="container">
+
+@if (session('error'))
+<script>
+    Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: "{{ session('error') }}",
+        showConfirmButton: false,
+        timer: 1500
+    });
+</script>
+@endif
+<div class="container my-4">
   <div class="row">
     <div class="col-xl-6 col-lg-6 my-2">
       <canvas id="myChart" height="400" aria-label="Hello ARIA World" role="img" style="background-color: white;"></canvas>
@@ -41,7 +50,7 @@
     <div class="row">
       <h4 class="text-center" style="color: white; font-family: fantasy;">Your Game</h4>
         @foreach ($games as $game)
-        <div class="col-xl-6 col-lg-6 my-2">
+          <div class="col-xl-6 col-lg-6 my-2">
             <div class="card">
               <div class="card-statistic-3 p-4">
                 <div class="card-icon card-icon-large"><i class="fa-solid fa-gamepad"></i></div>
@@ -84,11 +93,11 @@
                     <!-- sesuaikan dengan button yang ditekan/ ambil dari database -->
                     <tr>
                       <td>Game :</td>
-                      <td><input type="text" placeholder="Nama Game" name="game" id="game" value="{{ old('game') }}"></td>
+                      <td><input class="@error('game') is-invalid @enderror" type="text" placeholder="Nama Game" name="game" id="game" value="{{ old('game') }}"></td>
                     </tr>
                     <tr>
                       <td>Description</td>
-                      <td><textarea name="description" id="description" placeholder="Deskripsi" maxlength="500" value="{{ old('description') }}"></textarea></td>
+                      <td><textarea class="@error('description') is-invalid @enderror" name="description" id="description" placeholder="Deskripsi" maxlength="500" value="{{ old('description') }}"></textarea></td>
                     </tr>
                     <tr>
                       <td>Image</td>
@@ -96,7 +105,7 @@
                     </tr>
                     <tr>
                       <td colspan="2">
-                        <input type="file" name='image' id="image" accept=".jpg" hidden required>
+                        <input class="@error('image') is-invalid @enderror" type="file" name='image' id="image" accept=".jpg" hidden required>
                         <div class="img-area" data-img="">
                           <i class='bx bxs-cloud-upload icon'></i>
                           <h3>Upload Image</h3>

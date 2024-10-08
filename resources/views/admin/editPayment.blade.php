@@ -1,13 +1,5 @@
 @extends('layouts.main')
 
-@section('sidebar')
-    @include('partials.sidebar')
-@endsection
-
-@section('navbar')
-    @include('partials.navbaradmin')
-@endsection
-
 @section('body')
 <style>
     form .button {
@@ -26,7 +18,7 @@
     }
 </style>
     <div class="container">
-        <div class="containadmin p-4">
+        <div class="containadmin p-4 my-4">
             
             <form action="/payment/{{ $payments->slug }}/edit" method="POST" enctype="multipart/form-data">
                 @csrf

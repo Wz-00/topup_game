@@ -23,13 +23,18 @@ class PaymentController extends Controller
         ]);
     }
     public function upload(Request $request){
+        $request->validate([
+            'method' => 'required',
+            'rekening' => 'required | max:11',
+            'logo' => 'required | image | max:2048',
+        ]);
         $newPayment = new Payment;
-        $newPayment->Payment = $request->Payment;
-        $newPayment->slug = Str::slug($request->Payment);
-        $newPayment->description = $request->description;
-        $newPayment->image = $request->file('image')->store('/asset/img/Payment');
+        $newPayment->method = $request->input('method');
+        $newPayment->slug = Str::slug($request->input('method'));
+        $newPayment->number = $request->input('rekening');
+        $newPayment->logo = $request->file('logo')->store('/asset/img/Payment');
         $newPayment->save();
-        return redirect('/')->with('status', 'Payment has been added');
+        return redirect('/payment')->with('success', 'Payment has been added');
     }
     public function updateStatus(Request $request){
         $payment = Payment::find($request->payment_id);
@@ -39,12 +44,17 @@ class PaymentController extends Controller
             $payment->status = $request->status;
             $payment->save();
     
-            return response()->json(['message' => 'Payment status updated successfully!']);
+            return back()->with(['success' => 'Payment status updated successfully!']);
         }
     
-        return response()->json(['message' => 'Payment not found!'], 404);
+        return redirect()->back()->with(['error' => 'Payment not found!'], 404);
     }
     public function update(Request $request, Payment $payment){
+        $request->validate([
+            'method' => 'required',
+            'number' => 'required | integer | max:11',
+            'preview_logo' => 'required | image | max:2048',
+        ]);
         // Update payment data
         $payment->method = $request->input('method');
         $payment->number = $request->input('number');
@@ -55,7 +65,7 @@ class PaymentController extends Controller
             $payment->logo = $request->file('preview_logo')->store('/asset/img/payment');
         }
         $payment->save();
-        return redirect('/payment');
+        return redirect('/payment')->with('success', 'Payment Update successfully!');
     }
     public function destroy($id)
     {
@@ -104,6 +114,35 @@ class PaymentController extends Controller
 
         return redirect()->back()->with('error', 'Item not found!');
     }
+    public function setCoins(Request $request, $id){
+        $item = Item::find($id);
 
+        if ($item) {
+            // Validasi nilai diskon
+            $request->validate([
+                'coins' => 'required|integer|min:0|max:1000',
+            ]);
 
+            // Set diskon
+            $item->coins = $request->input('coins');
+            $item->save();
+
+            return redirect()->back()->with('success', 'Coins set successfully!');
+        }
+
+        return redirect()->back()->with('error', 'Item not found!');
+    }
+    public function removeCoins($id){
+        $item = Item::find($id);
+
+        if ($item) {
+            // Hapus diskon
+            $item->coins = null;
+            $item->save();
+
+            return redirect()->back()->with('success', 'Coins removed successfully!');
+        }
+
+        return redirect()->back()->with('error', 'Item not found!');
+    }
 }

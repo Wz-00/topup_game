@@ -1,9 +1,5 @@
 @extends('layouts.main')
 
-@section('navbar')
-    @include('partials.navbar')
-@endsection
-
 @section('body')
     <div class="pt-5"></div>
     <div class="pt-5 pb-5">
@@ -39,7 +35,7 @@
                                 <b>No. Rekening/ No. Virtual Account</b>
                                 <p>{{ $transaksi->payment->number }}</p>
                                 <b>Jumlah Pembayaran</b>
-                                <p>{{ 'Rp.' . number_format($transaksi->item->price, 2, ",", ".") }}</p>
+                                <p>{{ 'Rp.' . number_format($transaksi->price, 2, ",", ".") }}</p>
                             </div>
                             <div class="col">
                                 <b>No. Transaksi</b>

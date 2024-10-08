@@ -1,13 +1,5 @@
 @extends('layouts.main')
 
-@section('sidebar')
-    @include('partials.sidebar')
-@endsection
-
-@section('navbar')
-    @include('partials.navbaradmin')
-@endsection
-
 @section('body')
 <style>
     .close-btn {
@@ -34,7 +26,7 @@
         font-size: 16px;
     }
 </style>
-<div class="container-fluid text-light">
+<div class="container-fluid text-light my-4">
     <div class="containadmin p-4">
         <form onsubmit="saveUpdate(event)" action="{{ url('/'.$game->slug.'/edit') }}" method="POST" enctype="multipart/form-data">
             @csrf
@@ -43,9 +35,9 @@
                 <div class="g-col-3 g-col-md-1">
                     <div class="content">
                         <img id="preview_game" src="{{ asset('storage/' . $game->image) }}" alt="" class="img-fluid GameBanner">
-                        <input type="file" id="game_image" name="game_image" accept="image/*" style="display:none;" onchange="previewImage('game_image', 'preview_game')">
+                        <input type="file" id="preview_logo" name="game_image" accept="image/*" style="display:none;" onchange="previewImage('preview_logo', 'preview_game')">
                         <div class="d-flex justify-content-center">
-                            <button type="button" id="game_image_button" class="button text-center text-light" style="top: -16px;">Select Image</button>
+                            <button type="button" id="preview_logo_button" class="button text-center text-light" style="top: -16px;">Select Image</button>
                         </div>
                         <div class="mb-3">
                             <label for="game_name">Nama Game</label>

@@ -19,7 +19,9 @@ return new class extends Migration
             $table->foreignId('payment_id')->constrained('payments');
             $table->foreignId('game_id')->constrained('games');
             $table->foreignId('item_id');
-            $table->integer('Wa_Number');
+            $table->bigInteger('price');
+            $table->bigInteger('Wa_Number');
+            $table->integer('coins')->nullable();
             $table->string('status')->default('Menunggu Pembayaran');
             $table->timestamps();
         });

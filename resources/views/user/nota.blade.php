@@ -1,9 +1,5 @@
 @extends('layouts.main')
 
-@section('navbar')
-    @include('partials.navbar')
-@endsection
-
 @section('body')
     <div class="container py-5 containbg my-3">
         <h3 class="text-center"><b>Detail Pembayaran</b></h3>
@@ -22,9 +18,13 @@
                     <b>No. Rekening/ No. Virtual Account</b>
                     <p>{{ $transaksi->payment->number }}</p>
                     <b>Jumlah Pembayaran</b>
-                    <p>{{ 'Rp.' . number_format($transaksi->item->price, 2, ",", ".") }}</p>
-                    <b>Selesaikan Transaksi Sebelum</b>
-                    <p><span id="countdown-{{ $transaksi->id }}"></span></p>
+                    <p>{{ 'Rp.' . number_format($transaksi->price, 2, ",", ".") }}</p>
+                    @if ($transaksi->status === 'Menunggu Pembayaran')
+                        <b>Selesaikan Transaksi Sebelum</b>
+                        <p>
+                            <span id="countdown-{{ $transaksi->id }}"></span>
+                        </p>
+                    @endif
                 </div>
                 <div class="col">
                     <b>No. transaksi</b>

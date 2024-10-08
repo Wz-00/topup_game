@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
                 'username' => 'wizzsendpai',
                 'email' => 'wildanjk14@gmail.com',
                 'role' => 'member',
-                'password' => bcrypt('idontknow')
+                'password' => bcrypt('idontknow'),
             ]
         ];
         User::insert($users);
@@ -167,12 +167,15 @@ class DatabaseSeeder extends Seeder
             
         ];
         Banner::insert($banners);
+        $pay = ['method' => 'Your Coins', 'slug' => 'your-coins', 'logo' => 'asset/img/payment/coins.png'];
+        Payment::insert($pay);
         $payments = [
             ['method' => 'BCA Virtual Account', 'slug' => 'bca-va', 'number' => 12345678, 'logo' => 'asset/img/payment/bca.png'],
             ['method' => 'BRI Virtual Account', 'slug' => 'bri-va', 'number' => 32145678, 'logo' => 'asset/img/payment/BRI.png'],
             ['method' => 'BNI Virtual Account', 'slug' => 'bni-va', 'number' => 12365478, 'logo' => 'asset/img/payment/bni.png'],
             ['method' => 'Dana', 'slug' => 'dana', 'number' => 12345687, 'logo' => 'asset/img/payment/dana.png'],
-            ['method' => 'OVO', 'slug' => 'ovo', 'number' => 87654321, 'logo' => 'asset/img/payment/ovo.png']
+            ['method' => 'OVO', 'slug' => 'ovo', 'number' => 87654321, 'logo' => 'asset/img/payment/ovo.png'],
+            
         ];
         Payment::insert($payments);
         $company = [ 

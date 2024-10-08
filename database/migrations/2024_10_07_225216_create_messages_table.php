@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payments', function (Blueprint $table) {
+        Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            $table->string('method');
-            $table->string('slug')->unique();
-            $table->integer('number')->nullable();
-            $table->string('logo');
-            $table->string('status')->default('Available');
+            $table->string('name');
+            $table->string('email');
+            $table->string('subject');
+            $table->text('message');
+            $table->string('status')->default('unread');
+            $table->foreignId('user_id')->nullable();
+            $table->bigInteger('request_id');
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payments');
+        Schema::dropIfExists('messages');
     }
 };

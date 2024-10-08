@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('price');
             $table->string('icon')->default('default-icon.png');
             $table->string('discount')->nullable();
+            $table->integer('coins')->nullable();
             $table->integer('stock')->default(20);
             $table->timestamps();
         });

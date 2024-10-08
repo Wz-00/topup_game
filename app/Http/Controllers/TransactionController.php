@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Transaction;
 use App\Models\Company;
 use App\Models\Item;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -12,70 +13,113 @@ class TransactionController extends Controller
 {
     public function store(Request $request)
     {
+        // Validasi input request
+        $request->validate([
+            'id_game' => 'required',
+            'payment_id' => 'required',
+            'item_id' => 'required',
+        ]);
+
         $userId = Auth::check() ? Auth::id() : null;
         $item = Item::find($request->input('item_id'));
+        $coin = $item->coins === null ? null : $item->coins;
 
+        // Pengecekan ketersediaan coins jika menggunakan payment id 1
+        if ($request->input('payment_id') == 1 && Auth::check()) {
+            $userCoins = Auth::user()->coins;
+
+            if ($userCoins < $item->price) {
+                // Jika coins user tidak mencukupi, batalkan transaksi dengan pesan error
+                return back()->withErrors(['error' => 'Koin Anda tidak mencukupi untuk membeli item ini.']);
+            }
+
+            // Jika coins mencukupi, kurangi coins user
+            Auth::user()->coins -= $item->price;
+            Auth::user()->save();
+        }
+
+        // Membuat transaksi baru
         $transaction = new Transaction();
         $transaction->id_game = $request->input('id_game');
         $transaction->payment_id = $request->input('payment_id');
+        $price = $item->discount ? $item->price * (1 - $item->discount / 100) : $item->price;
+        $transaction->price = $price;
         $transaction->item_id = $request->input('item_id');
-        $transaction->Wa_Number = $request->input('Wa_Number');
+        
+        // Mengisi nomor WhatsApp berdasarkan kondisi user login atau input user
+        if (Auth::check()) {
+            if (Auth::user()->Wa !== null) {
+                $wa = Auth::user()->Wa;
+                $transaction->Wa_Number = $wa;
+            } else {
+                $transaction->Wa_Number = $request->input('Wa_Number');
+            }
+        } else {
+            $request->validate(['Wa_Number' => 'required']);
+            $transaction->Wa_Number = $request->input('Wa_Number');
+        }
+
+        // Mengisi game_id dan user_id
         $transaction->game_id = $request->input('game_id');
         $transaction->user_id = $userId;
+        $transaction->coins = $coin;
 
-        // Save data ke database, id_transaksi akan otomatis di-generate
+        // Mengatur status transaksi berdasarkan payment_id
+        if ($request->input('payment_id') == 1) {
+            // Jika menggunakan coins (payment id 1), status menjadi "Proses"
+            $transaction->status = 'Proses';
+        } else {
+            // Untuk payment method lainnya, status default tetap "Menunggu Pembayaran"
+            $transaction->status = 'Menunggu Pembayaran';
+        }
+
+        // Simpan data transaksi ke database
         $transaction->save();
+
+        // Kurangi stok item
         $item->stock -= 1;
         $item->save();
 
-        // Redirect menggunakan id_transaksi
+        // Redirect ke halaman nota dengan id_transaksi
         return redirect()->route('nota', ['id_transaksi' => $transaction->id_transaksi]);
     }
 
 
-    public function nota($id_transaksi = null)
+
+
+    public function nota($id_transaksi)
     {
-        // Pastikan user login
+        $transaksi = Transaction::where('id_transaksi', $id_transaksi)->firstOrFail();
+
+        return view('user.nota', [
+            'title' => 'Nota',
+            'transaksi' => $transaksi,
+            'metode' => $transaksi->payment,
+            'item' => $transaksi->item,
+        ]);
+    }
+    public function transaksi(){
         if (Auth::check()) {
+            $user = Auth::id();
             $role = Auth::user()->role;
-            
             // Jika role admin
             if ($role === 'admin') {
-                
                 return view('admin.transaksi', [
                     'title' => 'Transaksi',
                     'transactions' => Transaction::where('status', 'Menunggu Pembayaran')
                                                 ->orWhere('status', 'Proses')->with('user')
-                                                ->get()
-                ]);
-            } 
-            
-            // Jika role bukan admin (user biasa), tampilkan transaksi berdasarkan id_transaksi
-            else {
-                // Cari transaksi berdasarkan id_transaksi
-                $transaksi = Transaction::where('id_transaksi', $id_transaksi)->firstOrFail();
-
-                return view('user.nota', [
-                    'title' => 'Nota',
-                    'transaksi' => $transaksi,
-                    'metode' => $transaksi->payment,
-                    'item' => $transaksi->item,
-                    'companies' => Company::all()
+                                                ->get(),
                 ]);
             }
-        } 
-        
-        // Jika tidak login, anggap sebagai user biasa
-        else {
-            $transaksi = Transaction::where('id_transaksi', $id_transaksi)->firstOrFail();
-
-            return view('user.nota', [
-                'title' => 'Nota',
-                'transaksi' => $transaksi,
-                'metode' => $transaksi->payment,
-                'item' => $transaksi->item,
-            ]);
+            else {
+                return view('user.transaksi', [
+                    'title' => 'Transaksi',
+                    'transactions' => Transaction::where('user_id', Auth::user()->id)->with(['game', 'payment', 'item'])->get(),
+                    'user' => User::find($user)
+                ]);
+            }
         }
+        return redirect('/')->with('error', 'Anda Tidak memiliki akses untuk halaman ini');  
     }
 
     public function getNota(Request $request){
@@ -108,18 +152,25 @@ class TransactionController extends Controller
 
         // Cari transaksi
         $transaction = Transaction::find($id);
+        
 
         // Cek jika tanggal saat ini sudah melewati created_at + 1 hari dan status masih "Menunggu Pembayaran"
         if ($transaction->status === 'Menunggu Pembayaran' && now()->greaterThan($transaction->created_at->addDay(1))) {
             // Ubah status menjadi gagal
             $transaction->status = 'Gagal';
             $transaction->save();
+            return back()->with('error', 'Transaksi Gagal');
         }
         // Update status sesuai kondisi inputan
         if ($transaction->status === 'Menunggu Pembayaran' && $request->status === 'Konfirmasi Pembayaran') {
             $transaction->status = 'Proses';
-        } elseif ($transaction->status === 'Proses' && $request->status === 'Selesaikan Proses') {
+        } elseif ($transaction->status === 'Proses' && $request->status === 'Proses') {
             $transaction->status = 'Berhasil';
+            if ($transaction->user_id !== null) {
+                $user = User::find($transaction->user_id);
+                $user->coins += $transaction->coins;
+                $user->save();
+            }
         }
 
         $transaction->save();

@@ -3,11 +3,6 @@ document.getElementById('preview_logo_button').addEventListener('click', functio
     document.getElementById('preview_logo').click();
 });
 
-// Menambahkan event listener untuk tombol select image
-document.getElementById('game_image_button').addEventListener('click', function() {
-    document.getElementById('game_image').click();
-});
-
 // Function to preview the selected image
 function previewImage(inputId, previewId) {
     const input = document.getElementById(inputId);
@@ -54,6 +49,10 @@ function addMoreItem() {
                     <div class="col text-end form-floating">
                         <input type="number" id="item_price_${itemCount}" name="item_price[]" value="" style="width: 100%;" class="form-control py-0">
                     </div>
+                </div>
+                <p class="text-center">Stock</p>
+                <div class="form-floating">
+                    <input type="number" id="item_stock_${itemCount}" name="item_stock[]" value="{{ $it->stock }}" style="width: 100%" class="form-control py-0">
                 </div>
             </div>
         </div>

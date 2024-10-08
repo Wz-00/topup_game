@@ -16,13 +16,19 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $guarded = ['id'];
+    protected $guarded = [];
     public function transaction(){
         return $this->hasMany(Transaction::class);
     }
 
     public function company(){
-        return $this->hasOne(Company::class);
+        return $this->hasMany(Company::class);
+    }
+    public function message(){
+        return $this->hasMany(Message::class);
+    }
+    public function messageadmin(){
+        return $this->hasMany(MessageAdmin::class);
     }
 
     /**

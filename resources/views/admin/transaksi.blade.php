@@ -1,17 +1,32 @@
 @extends('layouts.main')
 
-@section('sidebar')
-    @include('partials.sidebar')
-@endsection
-
-@section('navbar')
-    @include('partials.navbaradmin')
-@endsection
-
 @section('body')
 <link rel="stylesheet" href="https://cdn.datatables.net/2.1.7/css/dataTables.dataTables.css">
-<div class="container-fluid">
+<div class="container-fluid my-4">
     <div class="containadmin p-4">
+        @if (session('success'))
+            <script>
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "{{ session('success') }}",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            </script>
+        @endif
+
+        @if (session('error'))
+            <script>
+                Swal.fire({
+                    position: "top-end",
+                    icon: "error",
+                    title: "{{ session('error') }}",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            </script>
+        @endif
         <div class="row">
             <div class="col-xl-12">
                 <div class="card my-3">
@@ -46,10 +61,10 @@
                                                 {{ $transaksi->user->name }}
                                             @endif
                                         </td>
-                                        <td>{{ $transaksi->id_transaksi }}</td>
+                                        <td id="idtransaksi">{{ $transaksi->id_transaksi }}</td>
                                         <td>{{ $transaksi->payment->method }}</td>
                                         <td>{{ $transaksi->item->item }}</td>
-                                        <td>{{ 'Rp.' . number_format($transaksi->item->price, 2, ",", ".") }}</td>
+                                        <td>{{ 'Rp.' . number_format($transaksi->price, 2, ",", ".") }}</td>
                                         <td>
                                             @if ($transaksi->status === 'Menunggu Pembayaran')
                                                 <span id="countdown-{{ $transaksi->id }}"></span>
@@ -100,7 +115,7 @@
                                                     @if ($transaksi->status === 'Menunggu Pembayaran')
                                                         <button class="btn btn-primary" type="button" onclick="confirmPayment({{ $transaksi->id }})">Konfirmasi Pembayaran</button>
                                                     @elseif($transaksi->status === 'Proses')
-                                                        <button class="btn btn-primary" type="button" onclick="">Selesaikan Proses</button>
+                                                        <button class="btn btn-primary" type="button" onclick="confirmProses({{ $transaksi->id }})">Selesaikan Proses</button>
                                                     @endif
                                                 @endif
                                             </form>
@@ -122,11 +137,27 @@
     @include('partials.adminfooter')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        
+        var id = document.getElementById('idtransaksi').innerHTML;
         function confirmPayment(transaksiID){
             Swal.fire({
             title: "Terima Pembayaran",
-            html: "Apakah User dengan Id Transaksi " + transaksiID + " sudah menyelesaikan pembayaran ?",
+            html: "Apakah User dengan Id Transaksi " + id + " sudah menyelesaikan pembayaran ?",
+            showDenyButton: true,
+            confirmButtonText: "Save",
+            denyButtonText: `Don't save`
+            }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                document.getElementById('transaksiForm' + transaksiID).submit();
+            } else if (result.isDenied) {
+                Swal.fire("Changes are not saved", "", "info");
+            }
+            });
+        }
+        function confirmProses(transaksiID){
+            Swal.fire({
+            title: "Konfirmasi pengiriman item",
+            html: "Apakah anda sudah mengirimkan item ke Id Transaksi " + id,
             showDenyButton: true,
             confirmButtonText: "Save",
             denyButtonText: `Don't save`
