@@ -92,6 +92,12 @@
                         </a>
                     </li>
                     <li>
+                        <a href="/cari-pesanan">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            Cek Pesananan
+                        </a>
+                    </li>
+                    <li>
                         <a href="/contact">
                             <i class="fa-solid fa-address-book"></i>
                             Kontak Admin

@@ -2,7 +2,7 @@
 
 @section('body')
     <div class="pt-5"></div>
-    <div class="pt-5 pb-5">
+    <div class="pt-5 pb-5 mx-3">
         <div class="contentsc align-self-center mx-auto">
             <div class="d-flex flex-columns">
                 <div class="container">
@@ -21,7 +21,7 @@
         </div>
     </div>
     @if(isset($transaksi) && $transaksi)
-        <div class="pb-5">
+        <div class="pb-5 mx-3">
             <div class="contentsc align-self-center mx-auto">
                 <div class="d-flex flex-columns">
                     <div class="container">
@@ -78,7 +78,7 @@
             </div>
         </div>
     @elseif(request()->has('search'))
-        <div class='pb-5'>
+        <div class='pb-5 mx-3'>
             <div class='contentsc align-self-center mx-auto'>
                 <div class='d-flex flex-columns'>
                     <div class='container'>

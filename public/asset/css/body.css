@@ -151,7 +151,7 @@ input[type="radio"]:checked+label{
   color: white;
 }
 .contentsc {
-  max-width: 500px;
+  max-width: 800px;
   width: 100%;
   background-color: #27292a;
   margin: 0 100px;
