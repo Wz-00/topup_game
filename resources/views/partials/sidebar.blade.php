@@ -1,6 +1,6 @@
 
 <link rel="stylesheet" href="/asset/css/sidebar.css">
-<div class="sidebar p-4 active-sidebar" id="sidebar">
+<div class="sidebar p-4" id="sidebar">
     @php
         $user = Auth::user();
     @endphp
@@ -67,46 +67,66 @@
                 </a>
             </li>
         @else
+            <style>
+                .sidebar{
+                    background-color: #27292a;
+                }
+            </style>
+                <h4 class="text-white">Welcome, {{ $user->name }}</h4>
+                <ul>
+                    <li>
+                        <a href="/">
+                            <i class="fa-solid fa-house-chimney"></i> 
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/transaksi">
+                            <i class="fa-solid fa-cart-plus"></i> 
+                            Transaksi
+                            @if($countTransaction > 0)
+                                <span class="number rounded-circle" style="top: 100px">
+                                    {{ $countTransaction }}
+                                </span>
+                            @endif
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/contact">
+                            <i class="fa-solid fa-address-book"></i>
+                            Kontak Admin
+                        </a>
+                    </li>
+                    <hr style="color: white">
+                    <li>
+                        <a href="/profile">
+                            <i class="fa-solid fa-user-large"></i> 
+                            Akun
+                        </a>
+                    </li>
+                </ul>
+        @endif
+    @else
         <style>
             .sidebar{
                 background-color: #27292a;
             }
         </style>
-            <h4 class="text-white">Welcome, {{ $user->name }}</h4>
-            <ul>
-                <li>
-                    <a href="/">
-                        <i class="fa-solid fa-house-chimney"></i> 
-                        Home
-                    </a>
-                </li>
-                <li>
-                    <a href="/transaksi">
-                        <i class="fa-solid fa-cart-plus"></i> 
-                        Transaksi
-                        @if($countTransaction > 0)
-                            <span class="number rounded-circle" style="top: 100px">
-                                {{ $countTransaction }}
-                            </span>
-                        @endif
-                    </a>
-                </li>
-                <li>
-                    <a href="/contact">
-                        <i class="fa-solid fa-address-book"></i>
-                        Kontak Admin
-                    </a>
-                </li>
-                <hr style="color: white">
-                <li>
-                    <a href="/profile">
-                        <i class="fa-solid fa-user-large"></i> 
-                        Akun
-                    </a>
-                </li>
-            </ul>
-        @endif
-    @else
-        
+        <ul>
+            <li>
+                <a href="/cari-pesanan">
+                    <span class="iconify" data-icon="ic:twotone-search" data-inline="false"
+                                style="font-size: 30px; color:white;"></span>
+                    Cek Pesananan
+                </a>
+            </li>
+            <li>
+                <a href="/contact">
+                    <span class="iconify" data-icon="fluent-mdl2:contact-info" data-inline="false"
+                                style="font-size: 30px; color:white;"></span>
+                    Kontak Admin
+                </a>
+            </li>
+        </ul>
     @endif
 </div>

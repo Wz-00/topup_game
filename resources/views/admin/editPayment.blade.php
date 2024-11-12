@@ -14,23 +14,26 @@
     }
     form img {
         width: 100%;
-        max-width: 500px;
+        max-width: 480px;
+
     }
 </style>
     <div class="container">
-        <div class="containadmin p-4 my-4">
-            
+        <div class="containadmin py-4 my-4">
             <form action="/payment/{{ $payments->slug }}/edit" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="grid" style="--bs-columns: 2;">
-                    <div class="g-col-md-2 g-col-lg-1">
-                        <img src="{{ asset('storage/'. $payments->logo ) }}" alt="" id="preview_payment">
+                    <div class="g-col-2 g-col-md-2 g-col-lg-1 mx-2">
+                        <div class="d-flex justify-content-center">
+                            <img src="{{ asset('storage/'. $payments->logo ) }}" alt="" id="preview_payment" class="mx-auto">
+                        </div>
+                        
                         <input type="file" id="preview_logo" name="preview_logo" accept="image/*" style="display:none;" onchange="previewImage('preview_logo', 'preview_payment')">
                         <div class="d-flex justify-content-center">
                             <button type="button" id="preview_logo_button" class="button text-center text-light">Select Logo</button>
                         </div>
                     </div>
-                    <div class="g-col-md-2 g-col-lg-1">
+                    <div class="g-col-2 g-col-md-2 g-col-lg-1">
                         <div class="bgform mb-4">
                             <div class="form-floating">
                                 <input type="text" id="method" name="method" class="form-control" placeholder="Masukkan Nama Pembayaran" value="{{ $payments->method }}">

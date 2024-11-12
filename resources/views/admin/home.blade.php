@@ -34,12 +34,16 @@
       <div class="card p-3">
         <div class="card-body">
           <h4 class="card-title">Top Selling Product</h4>
+          
           <ul class="list-group list-group-flush list-group-numbered">
-            <li class="list-group-item">Valorant</li>
+            @foreach ($topSellingGames as $topGames)
+              <li class="list-group-item">{{ $topGames->game }}</li>
+            @endforeach
+            {{-- <li class="list-group-item">Valorant</li>
             <li class="list-group-item">Mobile Legend</li>
             <li class="list-group-item">PUBG</li>
             <li class="list-group-item">League of Legend</li>
-            <li class="list-group-item">Genshin Impact</li>
+            <li class="list-group-item">Genshin Impact</li> --}}
           </ul>
         </div>
       </div>
@@ -48,7 +52,7 @@
 </div>
 <div class="container my-2 p-4 containadmin">
     <div class="row">
-      <h4 class="text-center" style="color: white; font-family: fantasy;">Your Game</h4>
+      <h4 class="text-center" style="font-size:2.8em; color: white; font-family: fantasy;">Your Game</h4>
         @foreach ($games as $game)
           <div class="col-xl-6 col-lg-6 my-2">
             <div class="card">
@@ -57,13 +61,13 @@
                 <div class="mb-4">
                   <h5 class="card-title mb-0">{{ $game['game'] }}</h5>
                 </div>
-                <div class="row align-items-center mb-2 d-flex">
+                <div class="row d-flex justify-content-between align-items-center mb-2 d-flex">
                   <div class="col-4">
                     <h2 class="d-flex align-items-center mb-0">
                       3,243
                     </h2>
                   </div>
-                  <div class="col-2 text-right">
+                  <div class="col-4 text-center">
                     <span>12.5% <i class="fa fa-arrow-up"></i></span>
                   </div>
                   <div class="col-4">
@@ -134,4 +138,40 @@
 @endsection
 @section('footer')
     @include('partials.adminfooter')
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        const ctx = document.getElementById("myChart");
+
+        const labels = @json($labels);  // Ambil data labels dari controller
+        const data = @json($data);      // Ambil data pendapatan dari controller
+
+        new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "Monthly Revenue",
+                    data: data,
+                    borderWidth: 1,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                }],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return 'Rp ' + value.toLocaleString(); // Format ke dalam Rupiah
+                            }
+                        }
+                    }
+                }
+            }
+        });
+      });
+    </script>
 @endsection

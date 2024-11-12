@@ -9,7 +9,6 @@
   .containadmin {
     background-color: #1f2122;
     border-radius: 20px;
-    margin: 0 20px;
   }
   .container .card {
     background-color: #1f2122;
@@ -72,7 +71,7 @@
 .bgform {
   background-color: #1f2122;
   border-radius: 30px;
-  padding: 20px;
+  padding: 0px 20px 20px ;
   margin-bottom: 10px;
   color: white;
 }
@@ -84,7 +83,7 @@
   color: white;
   text-align: center;
   background-color: #27292a;
-  top: -42px;
+  top: -15px;
   border: solid 3px #1f2122;
   padding-top: 4px;
 }
@@ -169,3 +168,17 @@ input[type="radio"]:checked+label{
     bottom: -15px;
 }
 
+.preview_logo {
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  width: 100%;
+  max-width: 834.76px;
+}
+
+@media (max-width:463px) {
+  .payment img, td .payment {
+    width: 100%;
+      max-width: 100px;
+      border-radius: 0;
+  }
+}

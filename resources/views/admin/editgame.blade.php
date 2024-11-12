@@ -53,7 +53,7 @@
                 <div class="g-col-3 g-col-md-2 text-center">
                     <div class="item p-3">
                         <h3>ITEM</h3>
-                        <div class="row row-cols-md-1 row-cols-lg-3" id="item-container">
+                        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-xl-3" id="item-container">
                             @foreach ($item as $it)
                                 <div class="col item-card">
                                     <div class="detail p-1 my-1">

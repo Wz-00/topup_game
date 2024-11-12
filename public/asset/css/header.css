@@ -173,6 +173,13 @@ input[type=text] {
   transition: box-shadow 0.2s ease-in, background-color 0.2s ease-in,
     border 0.3s;
 }
+@media (max-width:433px) {
+  .profile-dropdown-btn{
+    width: 110px;
+    display: flex;
+    justify-content: space-around;
+  }
+}
 
 .profile-dropdown-btn:hover {
   background-color: var(--secondary-light-2);

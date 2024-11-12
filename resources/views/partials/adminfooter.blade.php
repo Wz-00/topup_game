@@ -44,24 +44,5 @@
         }
       });
     });
-    const ctx = document.getElementById("myChart");
-
-    // chart
-    new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: ["January", "Februay", "March", "April", "May", "June"],
-        datasets: [{
-          label: "Monthly Revenue",
-          //   cokot ti database berdasarkan bulan
-          data: [2400000, 1440000, 3120000, 1500000, 705000, 0],
-          borderWidth: 1,
-        }, ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-      },
-      
-    });
+    
 </script>

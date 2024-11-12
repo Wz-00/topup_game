@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.7/css/dataTables.dataTables.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         .mySlides {
@@ -109,10 +110,9 @@
             }
         </style>
     @endif
-    @if (Auth::check())
         @include('partials.sidebar')
-    @endif
-    <div class="active-main-content" id="main-content">
+    
+    <div class="main-content" id="main-content">
         @include('partials.navbar')
         <script>
             // dropdown profile

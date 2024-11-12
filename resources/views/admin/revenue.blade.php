@@ -62,4 +62,40 @@
 @endsection
 @section('footer')
     @include('partials.adminfooter')
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+        const ctx = document.getElementById("myChart");
+
+        const labels = @json($labels);  // Ambil data labels dari controller
+        const data = @json($data);      // Ambil data pendapatan dari controller
+
+        new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "Monthly Revenue",
+                    data: data,
+                    borderWidth: 1,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                }],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return 'Rp ' + value.toLocaleString(); // Format ke dalam Rupiah
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        });
+    </script>
 @endsection

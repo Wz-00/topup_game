@@ -37,9 +37,9 @@
             <div class="col-lg-3 col-md-3">
                 <h3>Kontak</h3>
                 <ul class="menu-list">
-                    <li><a href="https://api.whatsapp.com/send/?phone={{ $company->wa }}&text&type=phone_number&app_absent=0"><span class="iconify" data-icon="mdi:whatsapp" data-inline="false" style="font-size: 30px;"></span>+{{ $company->wa }}</a></li>
-                    <li><a href="https://www.instagram.com/{{ $company->ig }}"><span class="iconify" data-icon="mdi:instagram" data-inline="false" style="font-size: 30px;"></span>&#64;{{ $company->ig }}</a></li>
-                    <li><a href="https://mail.google.com/mail/?view=cm&fs=1&to={{ $company->email }}&su=Subject&body=Message"><span class="iconify" data-icon="ic:baseline-email" data-inline="false" style="font-size: 30px;"></span>&#64;{{ $company->email }}</a></li>
+                    <li><a href="https://api.whatsapp.com/send/?phone={{ $company->wa }}&text&type=phone_number&app_absent=0"><span class="iconify" data-icon="mdi:whatsapp" data-inline="false" style="font-size: 30px;"></span> +{{ $company->wa }}</a></li>
+                    <li><a href="https://www.instagram.com/{{ $company->ig }}"><span class="iconify" data-icon="mdi:instagram" data-inline="false" style="font-size: 30px;"></span> &#64;{{ $company->ig }}</a></li>
+                    <li><a href="https://mail.google.com/mail/?view=cm&fs=1&to={{ $company->email }}&su=Subject&body=Message"><span class="iconify" data-icon="ic:baseline-email" data-inline="false" style="font-size: 30px;"></span> &#64;{{ $company->email }}</a></li>
                 </ul>
             </div>
             <div class="col-lg-2 col-md-3">

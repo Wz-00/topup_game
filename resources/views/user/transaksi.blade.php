@@ -2,8 +2,6 @@
 
 @section('body')
 <style>
-    .reward {
-    }
     .kiri {
         border-top-left-radius: 7px;
         border-bottom-left-radius: 7px;
@@ -14,74 +12,67 @@
         border-bottom-right-radius: 7px;
         border-top-right-radius: 7px;
     }
+    @media (max-width:767px){
+        .kiri {
+            border-top-right-radius: 7px;
+            border-bottom-left-radius: 0px;
+        }
+        .kanan {
+            border-bottom-left-radius: 7px;
+            border-top-right-radius: 0px;
+        }
+    }
 </style>
+
     <div class="container">
         <div class="containbg p-4 my-3">
             <h3>List Transaksi</h3>
             <div class="row">
                 <div class="col-12 my-2">
                     @if ($transactions->where('status', 'Menunggu Pembayaran')->isNotEmpty())
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <div class="card-title mb-4"><h4>Selesaikan Pembayaran</h4></div>
-                                <div class="row">
-                                    <div class="col-1">No.</div>
-                                    <div class="col-2">ID Transaksi</div>
-                                    <div class="col-1">Game</div>
-                                    <div class="col-2">ID Game</div>
-                                    <div class="col-2">Metode Pembayaran</div>
-                                    <div class="col-2">No. Rekening</div>
-                                    <div class="col-2">Jumlah Pembayaran</div>
-                                </div>
-                                @php
-                                    $i = 1;
-                                @endphp
+                        <table class="table table-hover table-dark" id="example">
+                            <thead>
+                                <tr class="align-self-center">
+                                    <th scope="col">ID Transaksi</th>
+                                    <th scope="col">Game</th>
+                                    <th scope="col">ID Game</th>
+                                    <th scope="col">Metode Pembayaran</th>
+                                    <th scope="col">No. Rekening</th>
+                                    <th scope="col">Jumlah Pembayaran</th>
+                                </tr>
                                 @foreach ($transactions as $key => $transaksi)
-                                    @if ($transaksi->status === 'Menunggu Pembayaran')
-                                        <hr color="white">
-                                        <div class="row mb-3">
-                                            <div class="col-1">{{ $i++ }}</div>
-                                            <div class="col-2">{{ $transaksi->id_transaksi }}</div>
-                                            <div class="col-1">{{ $transaksi->game->game }}</div>
-                                            <div class="col-2">{{ $transaksi->id_game }}</div>
-                                            <div class="col-2">{{ $transaksi->payment->method }}</div>
-                                            <div class="col-2">{{ $transaksi->payment->number }}</div>
-                                            <div class="col-2">{{ $transaksi->item->price }}</div>
-                                        </div>
-                                    @endif
+                                    <tr>{{ $transaksi->id_transaksi }}</tr>
+                                    <tr>{{ $transaksi->game->game }}</tr>
+                                    <tr>{{ $transaksi->id_game }}</tr>
+                                    <tr>{{ $transaksi->payment->method }}</tr>
+                                    <tr>{{ $transaksi->payment->number }}</tr>
+                                    <tr>{{ $transaksi->item->price }}</tr>
                                 @endforeach
-                            </div>
-                        </div>
+                            </thead>
+                        </table>
                     @endif
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-1">No.</div>
-                                <div class="col-2">ID Transaksi</div>
-                                <div class="col-1">Game</div>
-                                <div class="col-2">ID Game</div>
-                                <div class="col-2">Metode Pembayaran</div>
-                                <div class="col-2">No. WA</div>
-                                <div class="col-2">Status</div>
-                            </div>
-                            <hr color="white">
+                    <table class="table table-hover table-dark" id="example">
+                        <thead>
+                            <tr class="align-self-center">
+                                <th scope="col">ID Transaksi</th>
+                                <th scope="col">Game</th>
+                                <th scope="col">ID Game</th>
+                                <th scope="col">Metode Pembayaran</th>
+                                <th scope="col">Jumlah Pembayaran</th>
+                                <th scope="col">Status</th>
+                            </tr>
                             @foreach ($transactions as $key => $transaksi)
-                                @if ($transaksi->status !== 'Menunggu Pembayaran')
-                                    <div class="row mb-3">
-                                        <div class="col-1">{{ $key +=1 }}</div>
-                                        <div class="col-2">{{ $transaksi->id_transaksi }}</div>
-                                        <div class="col-1">{{ $transaksi->game->game }}</div>
-                                        <div class="col-2">{{ $transaksi->id_game }}</div>
-                                        <div class="col-2">{{ $transaksi->payment->method }}</div>
-                                        <div class="col-2">{{ $transaksi->Wa_Number }}</div>
-                                        <div class="col-2">{{ $transaksi->status }}</div>
-                                    </div>
-                                @endif
+                                <tr>{{ $transaksi->id_transaksi }}</tr>
+                                <tr>{{ $transaksi->game->game }}</tr>
+                                <tr>{{ $transaksi->id_game }}</tr>
+                                <tr>{{ $transaksi->payment->method }}</tr>
+                                <tr>{{ $transaksi->item->price }}</tr>
+                                <tr>{{ $transaksi->status }}</tr>
                             @endforeach
-                        </div>
-                    </div>
+                        </thead>
+                    </table>
                     <div class="row reward p-3" id="rewards">
-                        <div class="col kiri p-3">
+                        <div class="col-md-6 col-12 kiri p-3">
                             <h3><span class="iconify" data-icon="streamline:dollar-coin-solid" data-inline="false"
                                 style="color:#fbff00;"></span> Reward Coin Kamu</h3>
                         </div>
@@ -102,5 +93,18 @@
 @endsection
 
 @section('footer')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/2.1.7/js/dataTables.js"></script>
+<script>
+    // datatable
+    new DataTable('#example', {
+    scrollX: true
+    });
+    
+    // datatable
+    new DataTable('#example1', {
+    scrollX: true
+    });
+</script>
     @include('partials.footer')
 @endsection

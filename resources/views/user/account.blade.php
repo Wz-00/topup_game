@@ -55,14 +55,14 @@
                 @csrf
                 <h3 class="mb-5">Profile Settings</h3>
                 <div class="row">
-                    <div class="col-4">
-                        <img src="{{ $user->avatar === null ? 'asset/img/person-icon.png' : asset('storage/' . $user->avatar) }}" alt="" id="preview_logo_image">
+                    <div class="col-md-4 col-12">
+                        <img src="{{ $user->avatar === null ? 'asset/img/person-icon.png' : asset('storage/' . $user->avatar) }}" alt="" id="preview_logo_image" class="preview_logo">
                         <input type="file" id="preview_logo" name="avatar" accept="image/*" style="display:none;" onchange="previewImage('preview_logo', 'preview_logo_image')">
                         <div class="d-flex justify-content-center my-3">
                             <button class="button" type="button" id="preview_logo_button">Select Avatar</button>
                         </div>
                     </div>
-                    <div class="col-8 text-black my-auto">
+                    <div class="col-md-8 col-12 text-black my-auto">
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name" placeholder="Nama Lengkap" value="{{ $user->name }}">
                             <label for="name">Nama Lengkap</label>

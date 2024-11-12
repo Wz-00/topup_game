@@ -37,6 +37,7 @@
                     <!-- Id Game -->
                     <div class="mb-4 bgform">
                         <span class="rounded-circle number"><b>1</b></span>
+                        <br>
                         <span style="font-size: 25px; font-weight: bold;">Masukkan Game ID</span>
                         <div class="mb-3 form-floating">
                             <input type="text" id="floatingInput" name="id_game" class="form-control @error('id_game') is-invalid @enderror" placeholder="Riot ID" required/>
@@ -52,6 +53,7 @@
                     <!-- Item -->
                     <div class="mb-4 bgform">
                         <span class="rounded-circle number"><b>2</b></span>
+                        <br>
                         <span style="font-size: 25px; font-weight: bold;">Pilih Item</span>
                         <div class="row row-cols-sm-2 row-cols-md-3 gy-3">
                             @foreach ($items as $key=>$item)
@@ -100,6 +102,7 @@
                     <!-- Payment -->
                     <div class="mb-4 bgform">
                         <span class="rounded-circle number"><b>3</b></span>
+                        <br>
                         <span style="font-size: 25px; font-weight: bold;">Pilih Metode Pembayaran</span>
                         <div class="row row-cols-1">
                             @foreach ($payments as $key => $payment)
@@ -109,11 +112,13 @@
                                         <div class="">
                                             <input required type="radio" id="pay{{ $key }}" name="payment_id" value="{{ $payment->id }}" data-payment-id="{{ $payment->id }}" {{ ($payment->status === 'Unavailable' ? 'disabled' : '') }}>
                                             <label class="payment" for="pay{{ $key }}">
-                                                <b class="text-end px-4"><img src="{{ asset('storage/' . $payment->logo) }}" alt="" class="mx-5 p-2">
-                                                {{ $payment->method }}</b>
+                                                <img src="{{ asset('storage/' . $payment->logo) }}" alt="" class="ms-5 p-2 img-fluid">
+                                                @if ($payment->id != 1)
+                                                <b class="text-end px-4">{{ $payment->method }}</b>
+                                                @endif
                                                 {{-- Jika payment id 1, tampilkan coin user --}}
                                                 @if ($payment->id == 1)
-                                                    <b class="text-end px-4">Coins: {{ auth()->user()->coins === null ? '0' : auth()->user()->coins }}</b>
+                                                    <b class="text-end px-4">Your coins: {{ auth()->user()->coins === null ? '0' : auth()->user()->coins }}</b>
                                                 @endif
                                             </label>
                                         </div>
@@ -174,7 +179,7 @@
                                             <div class="">
                                                 <input type="radio" id="pay{{ $key }}" name="payment_id" value="{{ $payment->id }}" data-payment-id="{{ $payment->id }}" {{ ($payment->status === 'Unavailable' ? 'disabled' : '') }}>
                                                 <label class="payment" for="pay{{ $key }}">
-                                                    <img src="{{ asset('storage/' . $payment->logo) }}" alt="" class="mx-5 p-2">
+                                                    <img src="{{ asset('storage/' . $payment->logo) }}" alt="" class="ms-5 p-2">
                                                     <b class="text-end px-4">{{ $payment->method }}</b>
                                                 </label>
                                             </div>
@@ -188,6 +193,7 @@
                     <!-- Whatsapp -->
                     <div class="mb-4 bgform">
                         <span class="rounded-circle number"><b>4</b></span>
+                        <br>
                         <span style="font-size: 25px; font-weight: bold;">Konfirmasi No Whatsapp</span>
                         <div class="mb-3 form-floating">
                             @if (Auth::check())

@@ -1,11 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Transaction;
-use App\Models\Company;
+use Carbon\Carbon;
 use App\Models\Item;
 use App\Models\User;
+use App\Models\Company;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
@@ -137,9 +139,24 @@ class TransactionController extends Controller
         ]);
     }
     public function revenue(){
+        $transactions = DB::table('transactions')
+                ->select(
+                    DB::raw("DATE_FORMAT(created_at, '%M') as month"),
+                    DB::raw("SUM(price) as total_revenue")
+                )
+                ->where('created_at', '>=', Carbon::now()->subMonths(6))
+                ->groupBy('month')
+                ->orderBy('created_at')
+                ->get();
+
+            // Pisahkan label dan data untuk Chart.js
+            $labels = $transactions->pluck('month');
+            $data = $transactions->pluck('total_revenue');
         return view('admin.revenue', [
             'title' => 'Revenue',
-            'transactions' => Transaction::where('status', 'Berhasil')->orWhere('status', 'Gagal')->get()
+            'transactions' => Transaction::where('status', 'Berhasil')->orWhere('status', 'Gagal')->get(),
+            "labels" => $labels,
+            "data" => $data,
         ]);
     }
     public function transaksiadmin(Request $request, $id)

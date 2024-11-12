@@ -34,10 +34,26 @@
     .col li a::after {
         color: #e75e8d;
     }
+    .tampilan {
+        margin: 0 30px;
+    }
+    .icon {
+        font-size: 150px;
+    }
+    @media (max-width:767px){
+        .tampilan {
+            margin: 0;
+        }
+    }
+    @media (max-width:425px){
+        .icon {
+            font-size: 100px;
+        }
+    }
 </style>
     <div class="container-fluid my-4">
         <div class="p-4 text-light">
-            <div class="grid mx-5" style="--bs-columns: 3;">
+            <div class="grid tampilan" style="--bs-columns: 3;">
                 @if (session('success'))
                     <script>
                         Swal.fire({
@@ -84,7 +100,7 @@
                                 @csrf
                                 <div class="row row-cols-1">
                                     <div class="col mb-3 d-flex justify-content-center">
-                                        <img src="{{ asset('storage/' . $company->logo) }}" alt="" id="preview_logo_image">
+                                        <img src="{{ asset('storage/' . $company->logo) }}" alt="input image" id="preview_logo_image" class="preview_logo">
                                         <input type="file" id="preview_logo" name="preview_logo" accept="image/*" style="display:none;" onchange="previewImage('preview_logo', 'preview_logo_image')">
                                     </div>
                                     <div class="col mb-3 d-flex justify-content-center">
@@ -118,46 +134,46 @@
                             <form action="{{ route('update.company') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row">
-                                    <div class="col-lg-4 col-md-12 mb-3">
-                                        <span class="iconify" data-icon="skill-icons:instagram" data-inline="false" style="font-size: 150px;"></span>
+                                    <div class="col-md-4 col-sm-12 mb-3 icon">
+                                        <span class="iconify" data-icon="skill-icons:instagram" data-inline="false"></span>
                                     </div>
-                                    <div class="col-lg-8 col-md-12 d-flex align-items-center mb-3">
+                                    <div class="col-md-8 col-sm-12 d-flex align-items-center mb-3">
                                         <div class="form-floating" style="width: 100%">
                                             <input type="text" id="floatingInput" class="form-control" placeholder="Your Instagram link" value="{{ $company->ig }}" name="ig"/>
                                             <label for="floatingInput" class="text-black">Your Instagram link</label>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4 col-md-12 mb-3">
-                                        <span class="iconify" data-icon="devicon:facebook" data-inline="false" style="font-size: 150px;"></span>
+                                    <div class="col-md-4 col-sm-12 mb-3 icon">
+                                        <span class="iconify" data-icon="devicon:facebook" data-inline="false"></span>
                                     </div>
-                                    <div class="col-lg-8 col-md-12 d-flex align-items-center mb-3">
+                                    <div class="col-md-8 col-sm-12 d-flex align-items-center mb-3">
                                         <div class="form-floating" style="width: 100%">
                                             <input type="text" id="floatingInput" class="form-control" placeholder="Your Facebook link" value="{{ $company->fb }}" name="fb"/>
                                             <label for="floatingInput" class="text-black">Your Facebook link</label>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4 col-md-12 mb-3">
-                                        <span class="iconify" data-icon="logos:tiktok-icon" data-inline="false" style="font-size: 150px;"></span>
+                                    <div class="col-md-4 col-sm-12 mb-3 icon">
+                                        <span class="iconify" data-icon="logos:tiktok-icon" data-inline="false"></span>
                                     </div>
-                                    <div class="col-lg-8 col-md-12 d-flex align-items-center mb-3">
+                                    <div class="col-md-8 col-sm-12 d-flex align-items-center mb-3">
                                         <div class="form-floating" style="width: 100%">
                                             <input type="text" id="floatingInput" class="form-control" placeholder="Your Tiktok link" value="{{ $company->tiktok }}" name="tiktok"/>
                                             <label for="floatingInput" class="text-black">Your Tiktok link</label>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4 col-md-12 mb-3">
-                                        <span class="iconify" data-icon="logos:whatsapp-icon" data-inline="false" style="font-size: 150px;"></span>
+                                    <div class="col-md-4 col-sm-12 mb-3 icon">
+                                        <span class="iconify" data-icon="logos:whatsapp-icon" data-inline="false"></span>
                                     </div>
-                                    <div class="col-lg-8 col-md-12 d-flex align-items-center mb-3">
+                                    <div class="col-md-8 col-sm-12 d-flex align-items-center mb-3">
                                         <div class="form-floating" style="width: 100%">
                                             <input type="text" id="floatingInput" class="form-control" placeholder="Your WhatsApp link" value="{{ $company->wa }}" name="wa"/>
                                             <label for="floatingInput" class="text-black">Your WhatsApp link</label>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4 col-md-12 mb-3">
-                                        <span class="iconify" data-icon="logos:google-gmail" data-inline="false" style="font-size: 110px;"></span>
+                                    <div class="col-md-4 col-sm-12 mb-3 icon">
+                                        <span class="iconify" data-icon="skill-icons:gmail-dark" data-inline="false"></span>
                                     </div>
-                                    <div class="col-lg-8 col-md-12 d-flex align-items-center mb-3">
+                                    <div class="col-md-8 col-sm-12 d-flex align-items-center mb-3">
                                         <div class="form-floating" style="width: 100%">
                                             <input type="text" id="floatingInput" class="form-control" placeholder="Your Email" value="{{ $company->email }}" name="email"/>
                                             <label for="floatingInput" class="text-black">Your Email</label>

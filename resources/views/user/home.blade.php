@@ -52,8 +52,8 @@
         </div>
     </div>
     <div class="content">
-        <h1 style="font-size:4vw;font-family: fantasy; text-align: center;">Pick Your Game</h1>
-        <div class="row row-cols-sm-2 row-cols-md-3 row-cols-lg-5">
+        <h1 style="font-size:2.8em;font-family: fantasy; text-align: center;">Pick Your Game</h1>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5">
             @foreach ($games as $game)
                 <div class="col">
                     <div class="detail my-3 mx-3 pb-4">

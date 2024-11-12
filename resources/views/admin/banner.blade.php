@@ -75,7 +75,7 @@
                             <div class="d-flex justify-content-end">
                                 <button type="button" class="close-btn" onclick="removeCard(this)"><i class="fa-regular fa-circle-xmark"></i></button>
                             </div>
-                            <div class="row row-cols-sm-1 row-cols-md-2 d-flex align-items-center">
+                            <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 d-flex align-items-center">
                                 <div class="col">
                                     <img id="preview_banner_{{ $index }}" src="{{ asset('storage/' . $banner->banner) }}" alt="No Image" style="max-width: 100%;">
                                     <input type="file" id="banner_img_{{ $index }}" name="banner_img_{{ $index }}" accept="image/*" style="display:none;" onchange="previewImage(this, 'preview_banner_{{ $index }}')">

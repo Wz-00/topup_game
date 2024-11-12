@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Models\Game;
 use App\Models\Item;
 use App\Models\Banner;
 use App\Models\Company;
 use App\Models\Payment;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Transaction;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class GameController extends Controller
@@ -18,12 +21,31 @@ class GameController extends Controller
     {
         if (Auth::check()) {
             $role = Auth::user()->role;
+            $transactions = DB::table('transactions')
+                ->select(
+                    DB::raw("DATE_FORMAT(created_at, '%M') as month"),
+                    DB::raw("SUM(price) as total_revenue")
+                )
+                ->where('created_at', '>=', Carbon::now()->subMonths(6))
+                ->groupBy('month')
+                ->orderBy('created_at')
+                ->get();
+
+            // Pisahkan label dan data untuk Chart.js
+            $labels = $transactions->pluck('month');
+            $data = $transactions->pluck('total_revenue');
             if ($role === 'admin') {
                 $lowStockCount = Item::where('stock', '<=', 5)->count();
                 return view('admin.home', [
                     'title' => 'Home',
                     "games" => Game::all(),
                     "countStock" => $lowStockCount,
+                    "topSellingGames" => Game::withCount('transaction')
+                    ->orderBy('transaction_count', 'desc')
+                    ->take(5)
+                    ->get(),
+                    "labels" => $labels,
+                    "data" => $data
                 ]);
             } else {
                 return view('user.home', [

@@ -49,11 +49,11 @@
             <div class="row">
                 <div class="col-lg-6 col-md-12">
                     <div class="row">
-                        <div class="col-2">
+                        <div class="col-md-2 col-3">
                             <span class="iconify" data-icon="ic:sharp-whatsapp" data-inline="false"
                                 style="font-size: 70px; color:white;"></span>
                         </div>
-                        <div class="col-10">
+                        <div class="col-md-10 col-9">
                             <a href="https://api.whatsapp.com/send/?phone={{ $company->wa }}&text&type=phone_number&app_absent=0">
                                 <p>Whatsapp</p>
                             </a>
@@ -61,11 +61,11 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-2">
+                        <div class="col-md-2 col-3">
                             <span class="iconify" data-icon="mdi:instagram" data-inline="false"
                                 style="font-size: 70px; color:white;"></span>
                         </div>
-                        <div class="col-10">
+                        <div class="col-md-10 col-9">
                             <a href="https://www.instagram.com/{{ $company->ig }}">
                                 <p>Instagram</p>
                             </a>
@@ -73,11 +73,11 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-2">
+                        <div class="col-md-2 col-3">
                             <span class="iconify" data-icon="ic:baseline-email" data-inline="false"
                                 style="font-size: 70px; color:white;"></span>
                         </div>
-                        <div class="col-10">
+                        <div class="col-md-10 col-9">
                             <a href="">
                                 <p>Email</p>
                             </a>
