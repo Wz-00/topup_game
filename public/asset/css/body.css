@@ -157,7 +157,7 @@ input[type="radio"]:checked+label{
   margin: 0 100px;
   border-radius: 30px;
 }
-.contentsc button {
+.contentsc .cek button {
     display: inline-block;
     position: relative;
     background-color: #e75e8d;
@@ -166,6 +166,26 @@ input[type="radio"]:checked+label{
     padding: 5px 15px;
     color: white;
     bottom: -15px;
+}
+
+.nota .container{
+  /* border: 3px dashed white;
+  border-radius: 5px; */
+  background-color: #1f2122;
+  padding: 20px;
+  margin: 10px;
+  border-radius: 12px;
+  color: white;
+}
+.nota .button {
+  background-color: #e75e8d;
+border: none;
+border-radius: 15px;
+padding: 5px 15px;
+color: white;
+}
+.nota .img-area {
+  height: 20rem;
 }
 
 .preview_logo {

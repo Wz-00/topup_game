@@ -6,6 +6,7 @@ use App\Models\Item;
 use App\Models\User;
 use App\Models\Company;
 use App\Models\Transaction;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -108,7 +109,7 @@ class TransactionController extends Controller
             if ($role === 'admin') {
                 return view('admin.transaksi', [
                     'title' => 'Transaksi',
-                    'transactions' => Transaction::where('status', 'Menunggu Pembayaran')
+                    'transactions' => Transaction::where('status', 'Konfirmasi Pembayaran')
                                                 ->orWhere('status', 'Proses')->with('user')
                                                 ->get(),
                 ]);
@@ -116,6 +117,7 @@ class TransactionController extends Controller
             else {
                 return view('user.transaksi', [
                     'title' => 'Transaksi',
+                    'unpaid' => Transaction::where('user_id', Auth::user()->id)->where('status', 'Menunggu Pembayaran')->with(['game', 'payment', 'item'])->get(),
                     'transactions' => Transaction::where('user_id', Auth::user()->id)->with(['game', 'payment', 'item'])->get(),
                     'user' => User::find($user)
                 ]);
@@ -159,6 +161,34 @@ class TransactionController extends Controller
             "data" => $data,
         ]);
     }
+    public function bukti(Request $request, $id){
+        // $request->validate([
+        //     'bukti' => 'required|image|max:2048',
+        // ]);
+        
+        $transaction = Transaction::find($id);
+        // if ($request->hasFile('bukti')) {
+        //      // Convert relative path to absolute
+        //     if ($transaction->bukti === null) {
+        //         $oldIconPath = public_path($transaction->bukti);
+        //         Storage::delete($oldIconPath); // Use unlink to delete the old file
+        //     }
+        //     $transaction->bukti = $request->file('bukti')->store('/asset/img/transaction');
+        //     $transaction->status = $request->status;
+        //     $transaction->save();
+        //     return redirect()->back()->with('success', 'Status transaksi berhasil diperbarui.');
+        // }
+        // return redirect()->back()->with('error', 'gagal menambahkan gambar.');
+
+        if ($request->hasFile('bukti')) {
+            $transaction->bukti = $request->file('bukti')->store('/asset/img/transaction');
+            $transaction->status = $request->status;
+            $transaction->save();
+            return redirect()->back()->with('success', 'Status transaksi berhasil diperbarui.');
+        } else {
+            return 'File Missing';
+        }
+    }
     public function transaksiadmin(Request $request, $id)
     {
         // Validasi input
@@ -179,8 +209,10 @@ class TransactionController extends Controller
             return back()->with('error', 'Transaksi Gagal');
         }
         // Update status sesuai kondisi inputan
-        if ($transaction->status === 'Menunggu Pembayaran' && $request->status === 'Konfirmasi Pembayaran') {
+        if ($transaction->status === 'Konfirmasi Pembayaran' && $request->status === 'Konfirmasi Pembayaran') {
             $transaction->status = 'Proses';
+            $transaction->save();
+            return redirect()->back()->with('success', 'Status transaksi berhasil diperbarui.');
         } elseif ($transaction->status === 'Proses' && $request->status === 'Proses') {
             $transaction->status = 'Berhasil';
             if ($transaction->user_id !== null) {
@@ -188,11 +220,13 @@ class TransactionController extends Controller
                 $user->coins += $transaction->coins;
                 $user->save();
             }
+            $transaction->save();
+            return redirect()->back()->with('success', 'Status transaksi berhasil diperbarui.');
         }
 
-        $transaction->save();
+       
 
-        return redirect()->back()->with('success', 'Status transaksi berhasil diperbarui.');
+        return redirect()->back()->with('error', 'Gagal memperbarui status.');
     }
-
+    
 }

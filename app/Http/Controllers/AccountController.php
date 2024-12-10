@@ -46,6 +46,7 @@ class AccountController extends Controller
                 $company->logo = $request->file('preview_logo')->store('/asset/img');
             }
             $company->save();
+            return redirect()->back()->with('success', 'Company social links updated successfully.');
         }
 
         // Cek apakah form mengirimkan link sosial media
@@ -66,7 +67,7 @@ class AccountController extends Controller
             session()->forget('company');
             session()->put('company', $company);
 
-            return redirect()->back()->with('status', 'Company social links updated successfully.');
+            return redirect()->back()->with('success', 'Company social links updated successfully.');
         }
 
         return redirect()->back()->with('error', 'No changes detected.');

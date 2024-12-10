@@ -1,6 +1,7 @@
 @extends('layouts.main')
 
 @section('body')
+<link rel="stylesheet" href="https://cdn.datatables.net/2.1.7/css/dataTables.dataTables.css">
 <style>
     a {
         color: white;
@@ -130,7 +131,7 @@
         @if (Auth::check() && $activities->isNotEmpty())
             <div class="containbg my-3 p-4 text-white">
                 <h3 class="text-center mb-3">Aktivitas kamu</h3>
-                <table class="table table-hover table-dark" id="table">
+                <table class="table table-hover table-dark" id="example">
                     <thead>
                         <tr class="align-self-center">
                             <th scope="col">id</th>

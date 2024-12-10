@@ -22,6 +22,7 @@ return new class extends Migration
             $table->bigInteger('price');
             $table->bigInteger('Wa_Number');
             $table->integer('coins')->nullable();
+            $table->string('bukti')->nullable();
             $table->string('status')->default('Menunggu Pembayaran');
             $table->timestamps();
         });

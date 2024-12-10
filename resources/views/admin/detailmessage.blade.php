@@ -20,7 +20,12 @@
                 <div class="head mb-4">
                     <div class="row">
                         <div class="col-xl-1 col-md-2 col-sm-3 col-3">
-                            <img src="{{ auth()->user()->avatar === null ? '/asset/img/person-icon.png' : asset('storage/' . $avatar) }}" alt="" height="60" class="rounded-circle">
+                            @if ($user !== null)
+                                <img src="{{ $user->avatar === null ? '/asset/img/person-icon.png' : asset('storage/' . $user->avatar) }}" alt="" height="60" class="rounded-circle">
+                            @else
+                                <img src="/asset/img/person-icon.png" alt="" height="60" class="rounded-circle">
+                            @endif
+                            
                         </div>
                         <div class="col">
                             <p>{{ $activity->name }} </p>
@@ -47,10 +52,10 @@
                 <div class="card-body">
                     <div class="head mb-4">
                         <div class="row">
-                            <div class="col-3">
+                            <div class="col-xl-1 col-md-2 col-sm-3 col-3">
                                 <img src="/asset/img/person-icon.png" alt="" height="60" class="rounded-circle">
                             </div>
-                            <div class="col-9">
+                            <div class="col">
                                 <p>Admin</p>
                                 <p>{{ $adminElapsedTime }}</p>
                             </div>

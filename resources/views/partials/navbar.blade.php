@@ -65,7 +65,7 @@
                 
                 @endif
                 <a href='/' class='navbar-brand text-light'>
-                    <img src="{{ asset('storage/' . $company->logo) }}" class="" alt="logo">
+                    <img src="{{ asset('storage/' . $company->logo) }}" class="navbar-logo" alt="logo">
                     <span id="companyName"></span>
                     <script>
                         function displayCompanyName() {

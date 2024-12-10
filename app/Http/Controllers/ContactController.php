@@ -5,6 +5,7 @@ use App\Models\Company;
 
 use App\Models\Message;
 use App\Models\MessageAdmin;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -59,6 +60,7 @@ class ContactController extends Controller
                     'elapsedTime' => $elapsedTime,
                     'reply' => $reply,
                     'adminElapsedTime' => $adminElapsedTime, 
+                    'user' => User::find($activity->user_id)
                 ]);
             } else {
                 return view('user.detailmessage', [

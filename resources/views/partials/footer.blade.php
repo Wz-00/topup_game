@@ -56,11 +56,21 @@
         </div>
     </div>
 </div>
-<script src="https://cdn.datatables.net/2.1.7/js/dataTables.js"></script>
 <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/2.1.7/js/dataTables.js"></script>
 <script>
+    // datatable
+    new DataTable('#example', {
+    scrollX: true
+    });
+    
+    
     // event will be executed when the toggle-button is clicked
     document.getElementById("button-toggle").addEventListener("click", () => {
 
@@ -70,6 +80,4 @@
         // when the button-toggle is clicked, it will add/remove the active-main-content class
         document.getElementById("main-content").classList.toggle("active-main-content");
     });
-
-
 </script>

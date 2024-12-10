@@ -12,6 +12,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\MemberMiddleware;
 Route::get('/contact', [ContactController::class, 'index']);
+
 Route::get('/contact/{activity:request_id}', [ContactController::class, 'detail'])->name('detail.message');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.message');
 Route::post('/contact/{id}', [ContactController::class, 'updateStatus'])->name('update.status.message');
@@ -38,6 +39,8 @@ Route::get('/revenue', [TransactionController::class, 'revenue'])->middleware(Ad
 Route::get('/transaksi', [TransactionController::class, 'transaksi']);
 Route::post('/transaksi/{id}', [TransactionController::class, 'transaksiadmin'])->name('update.status')->middleware(AdminMiddleware::class);
 Route::get('/nota/{id_transaksi}', [TransactionController::class, 'nota'])->name('nota');
+Route::post('/nota/{id}', [TransactionController::class, 'bukti'])->name('bukti.upload');
+Route::post('/cari-pesanan', [TransactionController::class, 'bukti']);
 Route::get('/cari-pesanan', [TransactionController::class,'getNota'])->name('search.transaction');
 Route::get('/login', [LoginController::class, 'index'])->middleware('guest');
 Route::post('/login', [LoginController::class, 'store']);
