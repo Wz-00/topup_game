@@ -49,24 +49,37 @@ class PaymentController extends Controller
     
         return redirect()->back()->with(['error' => 'Payment not found!'], 404);
     }
-    public function update(Request $request, Payment $payment){
-        $request->validate([
-            'method' => 'required',
-            'number' => 'required | integer | max:11',
-            'preview_logo' => 'required | image | max:2048',
-        ]);
+    public function update(Request $request, Payment $payment)
+{
+    $request->validate([
+        'method' => 'required',
+        'number' => 'required | digits_between:1,11 | integer ',
+        'preview_logo' => 'nullable | image | max:2048',
+    ]);
+    if ($payment) {
         // Update payment data
         $payment->method = $request->input('method');
         $payment->number = $request->input('number');
-        
+        $payment->slug = Str::slug($request->input('method'));
+
         // Handle payment image upload
         if ($request->file('preview_logo')) {
-            Storage::delete($payment->logo);
+            // Hapus gambar lama hanya jika logo tidak null atau kosong
+            if ($payment->logo) {
+                Storage::delete($payment->logo);
+            }
+            // Simpan gambar baru
             $payment->logo = $request->file('preview_logo')->store('/asset/img/payment');
         }
+
         $payment->save();
+
         return redirect('/payment')->with('success', 'Payment Update successfully!');
     }
+
+    return redirect('/payment')->with('error', 'Gagal update!');
+}
+
     public function destroy($id)
     {
         $payment = Payment::find($id);

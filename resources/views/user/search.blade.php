@@ -1,6 +1,19 @@
 @extends('layouts.main')
 
 @section('body')
+<link rel="stylesheet" href="/asset/css/modal.css">
+<style>
+    .button{
+        background-color: #e75e8d;
+        border: none;
+        border-radius: 15px;
+        padding: 5px 15px;
+        color: white;
+    }
+    .img-area{
+     height: 500px;  
+    }
+</style>
     <div class="pt-5"></div>
     <div class="pt-5 pb-5 mx-3">
         <div class="contentsc align-self-center mx-auto">
@@ -45,7 +58,7 @@
                                 <b>Rincian Pemesanan</b>
                                 <p>{{ $transaksi->game->game }}</p>
                                 <b>Keterangan/ No. Token/ No. Voucher</b>
-                                <p>{{ $transaksi->status }}</p>
+                                <p>{{ $transaksi->status === 'Konfirmasi Pembayaran' ? 'Proses' : $transaksi->status }}</p>
                             </div>
                         </div>
                         @if ($transaksi->status === 'Menunggu Pembayaran')
@@ -73,20 +86,20 @@
                                         document.getElementById('transaksiForm{{ $transaksi->id }}').submit();
                                     }
                                 }, 1000);
-                        </script>
-                            <form action="/cari-pesanan" method="POST" enctype="multipart/form-data">
+                            </script>
+                            <form action="{{ route('bukti', $transaksi->id) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
-                                <div class="upload">
-                                    <div id="upload-container" class="text-center text-white upload-image py-4 my-3">
-                                        <span class="iconify" data-icon="ic:round-cloud-upload" data-inline="false" style="font-size: 130px;"></span>
-                                        <p>Drag & Drop Your Image</p>
-                                        <p>OR</p>
-                                        <input type="file" id="file-input" name="image" style="display: none;" accept="image/*">
-                                        <button id="browse-button" class="button" type="button">Browse File</button>
+                                <div class="text-center">
+                                    <input name="bukti" type="file" id="file" accept="image/*" hidden>
+                                    <div class="img-area" data-img="">
+                                        <i class='bx bxs-cloud-upload icon'></i>
+                                        <h3>Upload Image</h3>
+                                        <p>Image size must be less than <span>2MB</span></p>
                                     </div>
-                                    <input type="hidden" name="status" value="Konfirmasi Pembayaran">
-                                    <button id="upload-button" class="button" type="submit" style="">Upload</button>
+                                    <button class="select-image button" type="button">Select Image</button>
                                 </div>
+                                <input type="hidden" name="status" value="Konfirmasi Pembayaran">
+                                <button id="upload-button" class="button" type="submit" style="">Upload</button>
                             </form> 
                         @endif
                     </div>
@@ -110,6 +123,36 @@
 @section('footer')
     @include('partials.footer')
     <script>
+        // Fungsi upload gambar
+        const selectImage = document.querySelector('.select-image');
+        const inputFile = document.querySelector('#file');
+        const imgArea = document.querySelector('.img-area');
+
+        selectImage.addEventListener('click', function () {
+            inputFile.click();
+        })
+
+        inputFile.addEventListener('change', function () {
+            const image = this.files[0]
+            if(image.size < 2000000) {
+                const reader = new FileReader();
+                reader.onload = ()=> {
+                    const allImg = imgArea.querySelectorAll('img');
+                    allImg.forEach(item=> item.remove());
+                    const imgUrl = reader.result;
+                    const img = document.createElement('img');
+                    img.src = imgUrl;
+                    imgArea.appendChild(img);
+                    imgArea.classList.add('active');
+                    imgArea.dataset.img = image.name;
+                }
+                reader.readAsDataURL(image);
+            } else {
+                alert("Image size more than 2MB");
+            }
+        })
+
+
                 const uploadContainer = document.getElementById('upload-container');
         const fileInput = document.getElementById('file-input');
         const browseButton = document.getElementById('browse-button');

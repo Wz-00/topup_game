@@ -20,8 +20,9 @@
 </style>
     <div class="container">
         <div class="containadmin py-4 my-4">
-            <form action="/payment/{{ $payments->slug }}/edit" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('payment.edit', $payments->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
+                @method('put')
                 <div class="grid" style="--bs-columns: 2;">
                     <div class="g-col-2 g-col-md-2 g-col-lg-1 mx-2">
                         <div class="d-flex justify-content-center">
@@ -36,14 +37,24 @@
                     <div class="g-col-2 g-col-md-2 g-col-lg-1">
                         <div class="bgform mb-4">
                             <div class="form-floating">
-                                <input type="text" id="method" name="method" class="form-control" placeholder="Masukkan Nama Pembayaran" value="{{ $payments->method }}">
+                                <input type="text" id="method" name="method" class="form-control @error('method') is-invalid @enderror" placeholder="Masukkan Nama Pembayaran" value="{{ $payments->method }}" >
                                 <label for="method" class="text-black">Masukkan Nama Pembayaran</label>
+                                @error('method')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                         </div>
                         <div class="bgform mb-4">
                             <div class="form-floating">
-                                <input type="number" id="number" name="number" class="form-control" placeholder="Masukkan Nomor Pembayaran" value="{{ $payments->number }}">
+                                <input type="number" id="number" name="number" class="form-control @error('number') is-invalid @enderror" placeholder="Masukkan Nomor Pembayaran" value="{{ $payments->number }}" >
                                 <label for="number" class="text-black">Masukkan Nomor Pembayaran</label>
+                                @error('number')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                         </div>
                     </div>

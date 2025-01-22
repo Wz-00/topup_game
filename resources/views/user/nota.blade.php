@@ -154,9 +154,19 @@
                     <p>{{ $transaksi->game->game }}</p>
                     <b>Keterangan/ No. Token/ No. Voucher</b>
                     <p>{{ $transaksi->status === "Konfirmasi Pembayaran" ? "Proses" : $transaksi->status}}</p>
+                    
                 </div>
             </div>
+            
         </div>
+        @if ($transaksi->status === "Bukti Tidak Sesuai")
+            <div class="nota">
+                <div class="d-flex justify-content-center">
+                    <img src="{{ asset('storage/' . $transaksi->bukti) }}" alt="" class="img-fluid" style="max-height: 500px; height:100%">
+                </div>
+                
+            </div>
+        @endif
         @if ($transaksi->status === 'Menunggu Pembayaran')   
             <div class="nota">
                 <h3>Upload Bukti Pembayaranmu!</h3>

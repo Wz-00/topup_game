@@ -87,9 +87,6 @@ class TransactionController extends Controller
         return redirect()->route('nota', ['id_transaksi' => $transaction->id_transaksi]);
     }
 
-
-
-
     public function nota($id_transaksi)
     {
         $transaksi = Transaction::where('id_transaksi', $id_transaksi)->firstOrFail();
@@ -110,6 +107,7 @@ class TransactionController extends Controller
                 return view('admin.transaksi', [
                     'title' => 'Transaksi',
                     'transactions' => Transaction::where('status', 'Konfirmasi Pembayaran')
+                                                ->orWhere('status', 'Menunggu Pembayaran')
                                                 ->orWhere('status', 'Proses')->with('user')
                                                 ->get(),
                 ]);
@@ -206,7 +204,7 @@ class TransactionController extends Controller
             // Ubah status menjadi gagal
             $transaction->status = 'Gagal';
             $transaction->save();
-            return back()->with('error', 'Transaksi Gagal');
+            return back()->with('error', 'Transaksi dengan id '. $transaction->id_transaksi . ' Tidak membayar');
         }
         // Update status sesuai kondisi inputan
         if ($transaction->status === 'Konfirmasi Pembayaran' && $request->status === 'Konfirmasi Pembayaran') {
@@ -227,6 +225,17 @@ class TransactionController extends Controller
        
 
         return redirect()->back()->with('error', 'Gagal memperbarui status.');
+    }
+
+    public function cancelTransaction(Request $request, $id){
+        $request->validate([
+            'transaction_id' => 'required|exists:transactions,id',
+            'status' => 'required|string'
+        ]);
+        $transaction = Transaction::find($id);
+        $transaction->status = 'Bukti Tidak Sesuai';
+        $transaction->save();
+        return back()->with('error', 'Bukti transaksi dengan id '. $transaction->id_transaksi . ' Tidak sesuai');
     }
     
 }

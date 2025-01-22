@@ -11,7 +11,7 @@
                     icon: "success",
                     title: "{{ session('success') }}",
                     showConfirmButton: false,
-                    timer: 1500
+                    timer: 5000
                 });
             </script>
         @endif
@@ -23,7 +23,7 @@
                     icon: "error",
                     title: "{{ session('error') }}",
                     showConfirmButton: false,
-                    timer: 1500
+                    timer: 5000
                 });
             </script>
         @endif
@@ -89,6 +89,15 @@
                                                     @endif
                                                 @endif
                                             </form>
+                                            @if ($transaksi->status === 'Konfirmasi Pembayaran')
+                                                <form id="cancelTransaksi{{ $transaksi->id }}" action="{{ route('cancel.status', $transaksi->id) }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" id="transaksiID" name="transaction_id" value="{{ $transaksi->id }}">
+                                                    <input type="hidden" id="statusField" name="status" value="{{ $transaksi->status === 'Konfirmasi Pembayaran' ? 'Konfirmasi Pembayaran' : 'Proses' }}">
+                                                    <button class="btn btn-danger" type="button" onclick="cancelPayment({{ $transaksi->id }})">Gagalkan Transaksi</button>
+                                                </form>
+                                            @endif
+                                            
                                         </td>
                                     </tr>
                                     @if ($transaksi->status === 'Menunggu Pembayaran')
@@ -162,6 +171,22 @@
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
                 document.getElementById('transaksiForm' + transaksiID).submit();
+            } else if (result.isDenied) {
+                Swal.fire("Changes are not saved", "", "info");
+            }
+            });
+        }
+        function cancelPayment(transaksiID){
+            Swal.fire({
+            title: "Pembayaran Gagal",
+            html: "Apakah anda sudah cek kembali bukti transaksi dengan id " + id,
+            showDenyButton: true,
+            confirmButtonText: "Save",
+            denyButtonText: `Don't save`
+            }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                document.getElementById('cancelTransaksi' + transaksiID).submit();
             } else if (result.isDenied) {
                 Swal.fire("Changes are not saved", "", "info");
             }

@@ -1,7 +1,11 @@
 @extends('layouts.main')
 
 @section('body')
-
+<style>
+    .img-area{
+        height: 15rem;
+    }
+</style>
 <div class="container my-4 p-4 containadmin">
     @if (session('success'))
         <script>

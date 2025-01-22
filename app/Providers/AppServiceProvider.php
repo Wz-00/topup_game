@@ -25,19 +25,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         view()->share('company', Company::first());
-        // $count = Transaction::whereIn('status', ['Menunggu Pembayaran', 'Proses'])->count();
-        // View::share('count', $count);
-        // if (Auth::check()) {
-        //     if (Auth::user()->role === 'admin') {
-        //         $count = Transaction::whereIn('status', ['Menunggu Pembayaran', 'Proses'])->count();
-        //         View::share('count', $count);
-        //     // } else {
-        //     //     $count = Transaction::where('user_id', Auth::user()->id)
-        //     //     ->where('status', 'Menunggu Pembayaran')
-        //     //     ->count();
-        //     }
-            
-        // }
         View::composer(['partials.navbar', 'partials.sidebar'], function ($view) {
             // Dapatkan user yang sedang login
             $user = Auth::user();
@@ -51,7 +38,7 @@ class AppServiceProvider extends ServiceProvider
                 // Jika role user adalah 'admin'
                 if ($user->role === 'admin') {
                     // Hitung transaksi dengan status 'Menunggu Pembayaran' atau 'Proses' untuk admin
-                    $count = Transaction::whereIn('status', ['Menunggu Pembayaran', 'Proses'])->count();
+                    $count = Transaction::whereIn('status', ['Konfirmasi Pembayaran', 'Proses'])->count();
                     
                     // Hitung pesan 'unread' untuk admin
                     $countMessage = Message::where('status', 'unread')->count();
