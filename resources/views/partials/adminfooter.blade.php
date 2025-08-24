@@ -1,5 +1,5 @@
-<div class="text-center pt-3 text-light">
-    <p>Copyright © 2036 Your Company. All rights reserved.</p>
+<div class="text-center my-5 text-light">
+    <p><a href="https://creativecommons.org">TopUp Game</a> © 2024 by <a href="https://creativecommons.org">Wildan JK</a> is licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International</a><img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"></p>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/asset/js/modal.js"></script>

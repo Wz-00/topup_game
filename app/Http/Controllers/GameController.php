@@ -24,11 +24,12 @@ class GameController extends Controller
             $transactions = DB::table('transactions')
                 ->select(
                     DB::raw("DATE_FORMAT(created_at, '%M') as month"),
-                    DB::raw("SUM(price) as total_revenue")
+                    DB::raw("SUM(price) as total_revenue"),
+                    DB::raw("MIN(created_at) as first_date")
                 )
                 ->where('created_at', '>=', Carbon::now()->subMonths(6))
                 ->groupBy('month')
-                ->orderBy('created_at')
+                ->orderBy('first_date', 'asc')
                 ->get();
 
             // Pisahkan label dan data untuk Chart.js

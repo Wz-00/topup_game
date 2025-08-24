@@ -105,11 +105,11 @@ Kontribusi sangat kami hargai! Silakan ajukan *pull request* atau buat *issue* u
 
 ## Lisensi
 
-Proyek ini dilisensikan di bawah [MIT License](LICENSE).
+Proyek ini dilisensikan di bawah [CC-BY-NC 4.0](LICENSE).
 
 ## Kontak
 
 Dikembangkan oleh Wizz Sendpai. Untuk pertanyaan atau kolaborasi, hubungi:
 
-* Email: `wizz.sendpai@example.com`
+* Email: `wildanjk14@gmail.com`
 * GitHub: [Wz-00](https://github.com/Wz-00)
